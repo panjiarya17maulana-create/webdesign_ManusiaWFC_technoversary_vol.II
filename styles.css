@@ -1776,7 +1776,8 @@ h3 {
 
 @media(max-width:700px) {
   .wrap {
-    width: min(100% - 34px, 520px)
+    width: calc(100% - 32px);
+    max-width: 100%;
   }
 
   .announcement .wrap {
@@ -4781,6 +4782,7 @@ body.home-page .coastal-wave+.footer {
   grid-template-columns: repeat(2, minmax(0, 1fr))
 }
 
+/* ── SOUND WIDGET: bulat saat off, pill saat on ── */
 .sound-widget {
   position: fixed;
   right: max(16px, env(safe-area-inset-right));
@@ -4789,27 +4791,33 @@ body.home-page .coastal-wave+.footer {
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: 10px;
-  max-width: calc(100vw - 32px);
-  padding: 7px 12px;
-  border: 1px solid rgba(217, 241, 106, .55);
+  overflow: hidden;
+  border: 1.5px solid rgba(217, 241, 106, .55);
   border-radius: 999px;
   background: rgba(16, 47, 41, .94);
   box-shadow: 0 10px 28px rgba(8, 31, 26, .25);
   backdrop-filter: blur(10px);
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
   touch-action: none;
   user-select: none;
+  /* Collapsed = bulat sempurna 52x52 */
+  width: 52px;
+  min-width: 52px;
+  max-width: 52px;
+  height: 52px;
+  padding: 0;
+  transition: width .45s cubic-bezier(.16, 1, .3, 1),
+              max-width .45s cubic-bezier(.16, 1, .3, 1),
+              border-color .2s ease,
+              box-shadow .2s ease,
+              transform .2s ease;
 }
 
 .sound-widget:hover {
   transform: translateY(-2px);
-  border-color: #d9f16a
+  border-color: #d9f16a;
 }
 
-.sound-widget.is-draggable {
-  cursor: grab;
-}
+.sound-widget.is-draggable { cursor: grab; }
 
 .sound-widget.is-dragging {
   cursor: grabbing !important;
@@ -4819,93 +4827,104 @@ body.home-page .coastal-wave+.footer {
   opacity: .95;
 }
 
-.sound-drag-handle {
+/* Handle drag disembunyikan karena dragging via full widget */
+.sound-drag-handle { display: none; }
+
+/* ── Tombol toggle: selalu lingkaran 52×52 ── */
+.sound-toggle {
+  position: relative;
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: rgba(217, 241, 106, .65);
-  cursor: grab;
-  padding-right: 2px;
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #f4f7ed;
+  cursor: pointer;
   transition: color .2s ease;
 }
 
-.sound-widget:hover .sound-drag-handle {
-  color: #d9f16a;
-}
-
-.sound-widget.is-dragging .sound-drag-handle {
-  cursor: grabbing !important;
-}
-
-.sound-toggle {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-width: 0;
-  max-width: calc(100vw - 32px);
-  padding: 4px 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: #f4f7ed;
-  font: 700 11px var(--font-body);
-  cursor: pointer;
-  transition: color .2s ease
-}
-
 .toast {
-  bottom: 76px
+  bottom: 74px;
 }
 
-.sound-toggle:hover {
-  color: #d9f16a
-}
+.sound-toggle:hover { color: #d9f16a; }
 
 .sound-toggle:focus-visible {
   outline: 3px solid #d9f16a;
-  outline-offset: 5px
+  outline-offset: 3px;
 }
 
+/* ── Label (Suara Alam: On/Off) ── */
+[data-sound-label],
+.sound-label {
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  font: 700 11px var(--font-body);
+  color: #f4f7ed;
+  opacity: 0;
+  max-width: 0;
+  padding: 0;
+  pointer-events: none;
+  transition: max-width .35s ease,
+              opacity .25s ease,
+              padding .35s ease;
+}
+
+/* ── Volume ── */
 .sound-volume {
   display: flex;
   align-items: center;
   gap: 6px;
-  min-width: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
   color: #e5eee7;
   font: 700 10px var(--font-body);
-  white-space: nowrap
+  opacity: 0;
+  max-width: 0;
+  padding: 0;
+  pointer-events: none;
+  transition: max-width .35s ease .05s,
+              opacity .25s ease .05s,
+              padding .35s ease .05s;
 }
 
 .sound-volume input {
   width: 82px;
-  min-width: 56px;
+  min-width: 54px;
   height: 20px;
   margin: 0;
   accent-color: #d9f16a;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .sound-volume input:focus-visible {
   outline: 2px solid #d9f16a;
-  outline-offset: 3px
+  outline-offset: 3px;
 }
 
 .sound-volume-value {
   min-width: 30px;
   color: #d9f16a;
   text-align: right;
-  font-size: 10px
+  font-size: 10px;
 }
 
+/* ── Equalizer bars ── */
 .sound-equalizer {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 3px;
   width: 20px;
-  height: 16px
+  height: 16px;
 }
 
 .sound-equalizer i {
@@ -4916,19 +4935,44 @@ body.home-page .coastal-wave+.footer {
   background: #d9f16a;
   transform: scaleY(.65);
   transform-origin: center;
-  transition: transform .2s ease
+  transition: transform .2s ease;
 }
 
 .sound-toggle[aria-pressed=true] .sound-equalizer i {
-  animation: sound-equalize .72s ease-in-out infinite alternate
+  animation: sound-equalize .72s ease-in-out infinite alternate;
 }
 
 .sound-toggle[aria-pressed=true] .sound-equalizer i:nth-child(2) {
-  animation-delay: -.36s
+  animation-delay: -.36s;
 }
 
 .sound-toggle[aria-pressed=true] .sound-equalizer i:nth-child(3) {
-  animation-delay: -.18s
+  animation-delay: -.18s;
+}
+
+/* ── EXPANDED: Ketika ditekan menjadi panjang ── */
+.sound-widget:has([aria-pressed="true"]),
+.sound-widget.is-expanded {
+  width: 375px;
+  max-width: calc(100vw - 28px);
+}
+
+.sound-widget:has([aria-pressed="true"]) [data-sound-label],
+.sound-widget:has([aria-pressed="true"]) .sound-label,
+.sound-widget.is-expanded [data-sound-label],
+.sound-widget.is-expanded .sound-label {
+  max-width: 140px;
+  opacity: 1;
+  padding: 0 4px 0 6px;
+  pointer-events: auto;
+}
+
+.sound-widget:has([aria-pressed="true"]) .sound-volume,
+.sound-widget.is-expanded .sound-volume {
+  max-width: 220px;
+  opacity: 1;
+  padding: 0 14px 0 6px;
+  pointer-events: auto;
 }
 
 @keyframes hotspot-pulse {
@@ -4983,29 +5027,168 @@ body.home-page .coastal-wave+.footer {
   .adoption-options {
     grid-template-columns: 1fr
   }
+}
 
-  .sound-widget {
-    gap: 7px;
-    padding: 7px 9px
+/* ── Responsive: Sound widget di semua ukuran layar ── */
+@media(max-width:480px) {
+  .sound-widget:has([aria-pressed="true"]),
+  .sound-widget.is-expanded {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
   }
 
-  .sound-toggle {
-    gap: 7px;
-    font-size: 10px
+  .sound-widget:has([aria-pressed="true"]) .sound-volume input,
+  .sound-widget.is-expanded .sound-volume input {
+    width: 54px;
+    min-width: 42px;
   }
 
-  .sound-volume {
-    gap: 4px;
-    font-size: 9px
+  .sound-widget:has([aria-pressed="true"]) [data-sound-label],
+  .sound-widget.is-expanded [data-sound-label] {
+    font-size: 10px;
   }
 
-  .sound-volume input {
-    width: 64px;
-    min-width: 48px
+  .sound-widget:has([aria-pressed="true"]) .sound-volume-value,
+  .sound-widget.is-expanded .sound-volume-value {
+    display: none;
+  }
+}
+
+/* ── Responsive Tablet (701px - 1024px) ── */
+@media(min-width:701px) and (max-width:1024px) {
+  .wrap {
+    width: calc(100% - 40px);
+    max-width: 100%;
   }
 
-  .sound-volume-value {
-    display: none
+  .species-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .article-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .benefits-grid,
+  .guidelines-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .story-grid {
+    gap: 16px;
+  }
+
+  .habitat-explorer {
+    grid-template-columns: .85fr 1.15fr;
+  }
+
+  .tour-frame {
+    height: 380px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1.2fr .8fr .9fr;
+    gap: 28px;
+  }
+}
+
+/* ── Responsive Mobile Sedang (481px - 700px) ── */
+@media(min-width:481px) and (max-width:700px) {
+  .wrap {
+    width: calc(100% - 32px);
+    max-width: 100%;
+  }
+
+  .species-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* ── Responsive Mobile Kecil (<480px) ── */
+@media(max-width:480px) {
+  body {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: clamp(34px, 10vw, 46px);
+  }
+
+  h2 {
+    font-size: clamp(24px, 7vw, 34px);
+  }
+
+  .wrap {
+    width: calc(100% - 24px);
+  }
+
+  .section {
+    padding: 44px 0;
+  }
+
+  .section-tight {
+    padding: 32px 0;
+  }
+
+  .hero-image {
+    height: 250px;
+  }
+
+  .floating-note {
+    display: none;
+  }
+
+  .stats-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .nav-row {
+    height: 62px;
+  }
+
+  .btn {
+    padding: 11px 15px;
+    font-size: 12px;
+  }
+
+  .species-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .species-photo {
+    height: 180px;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .story-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .footer-grid > div:first-child {
+    grid-column: auto;
+  }
+
+  .footer-bottom {
+    font-size: 9px;
   }
 }
 

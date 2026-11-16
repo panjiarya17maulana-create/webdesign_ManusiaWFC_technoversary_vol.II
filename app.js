@@ -451,11 +451,12 @@ const initAmbientSoundscape = () => {
   const button = document.querySelector('[data-sound-toggle]');
   if (!button) return;
 
-  const label = button.querySelector('[data-sound-label]');
+  const widget = button.closest('.sound-widget');
+  const label = (widget && widget.querySelector('[data-sound-label]')) || button.querySelector('[data-sound-label]');
   const status = document.querySelector('[data-sound-status]');
   const volumeInput = document.querySelector('[data-sound-volume]');
   const volumeOutput = document.querySelector('[data-sound-volume-output]');
-  if (!label || !status || !volumeInput || !volumeOutput) {
+  if (!status || !volumeInput || !volumeOutput) {
     console.error('Kontrol suara alam tidak lengkap pada halaman ini.');
     return;
   }
@@ -498,7 +499,21 @@ const initAmbientSoundscape = () => {
   const setControlState = (enabled, message = '') => {
     button.setAttribute('aria-pressed', String(enabled));
     button.setAttribute('aria-label', `${enabled ? 'Matikan' : 'Aktifkan'} suara alam`);
-    label.textContent = `Suara Alam: ${enabled ? 'On' : 'Off'}`;
+    button.title = enabled ? 'Matikan Suara Alam' : 'Putar Musik Suara Alam';
+    if (widget) {
+      widget.classList.toggle('is-expanded', enabled);
+      if (widget.style.left) {
+        window.setTimeout(() => {
+          const rect = widget.getBoundingClientRect();
+          if (rect.right > window.innerWidth - 12) {
+            widget.style.left = `${Math.max(12, window.innerWidth - widget.offsetWidth - 12)}px`;
+          }
+        }, 60);
+      }
+    }
+    if (label) {
+      label.textContent = `Suara Alam: ${enabled ? 'On' : 'Off'}`;
+    }
     status.textContent = message || volumeStorageWarning;
   };
 
@@ -630,7 +645,6 @@ const initAmbientSoundscape = () => {
     }
   });
 
-  const widget = button.closest('.sound-widget');
   if (widget) {
     widget.classList.add('is-draggable');
 
@@ -690,7 +704,7 @@ const initAmbientSoundscape = () => {
     } catch (_) {}
 
     widget.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('input[type="range"]') || e.target.closest('[data-sound-toggle]') || e.button !== 0) return;
+      if (e.target.closest('input[type="range"]') || e.button !== 0) return;
 
       isDragging = true;
       hasMoved = false;
@@ -700,10 +714,6 @@ const initAmbientSoundscape = () => {
       const rect = widget.getBoundingClientRect();
       origLeft = rect.left;
       origTop = rect.top;
-
-      try {
-        widget.setPointerCapture(e.pointerId);
-      } catch (_) {}
     });
 
     widget.addEventListener('pointermove', (e) => {
@@ -712,11 +722,14 @@ const initAmbientSoundscape = () => {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
 
-      if (!hasMoved && Math.hypot(dx, dy) < 4) return;
+      if (!hasMoved && Math.hypot(dx, dy) < 6) return;
 
       if (!hasMoved) {
         hasMoved = true;
         widget.classList.add('is-dragging');
+        try {
+          widget.setPointerCapture(e.pointerId);
+        } catch (_) {}
       }
 
       applyPosition(origLeft + dx, origTop + dy);
@@ -727,7 +740,9 @@ const initAmbientSoundscape = () => {
       isDragging = false;
 
       try {
-        widget.releasePointerCapture(e.pointerId);
+        if (widget.hasPointerCapture && widget.hasPointerCapture(e.pointerId)) {
+          widget.releasePointerCapture(e.pointerId);
+        }
       } catch (_) {}
 
       widget.classList.remove('is-dragging');
@@ -736,12 +751,8 @@ const initAmbientSoundscape = () => {
         const preventClick = (ev) => {
           ev.stopImmediatePropagation();
           ev.preventDefault();
-          widget.removeEventListener('click', preventClick, true);
         };
-        widget.addEventListener('click', preventClick, true);
-        window.setTimeout(() => {
-          widget.removeEventListener('click', preventClick, true);
-        }, 120);
+        window.addEventListener('click', preventClick, { capture: true, once: true });
 
         try {
           const rect = widget.getBoundingClientRect();
