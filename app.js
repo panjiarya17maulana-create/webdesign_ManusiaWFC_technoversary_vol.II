@@ -690,7 +690,7 @@ const initAmbientSoundscape = () => {
     } catch (_) {}
 
     widget.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('input[type="range"]') || e.button !== 0) return;
+      if (e.target.closest('input[type="range"]') || e.target.closest('[data-sound-toggle]') || e.button !== 0) return;
 
       isDragging = true;
       hasMoved = false;
