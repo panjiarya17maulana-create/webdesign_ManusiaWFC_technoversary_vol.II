@@ -468,6 +468,8 @@ const initAmbientSoundscape = () => {
   let volumeStorageWarning = '';
   let volume = 45;
   let autoCollapseTimer = null;
+  let isAudioTransitioning = false;
+  let dragCompletedRecently = false;
 
   const clearAutoCollapse = () => {
     if (autoCollapseTimer) {
@@ -492,7 +494,7 @@ const initAmbientSoundscape = () => {
     clearAutoCollapse();
     widget.classList.remove('is-expanded');
     button.title = activeSoundscape
-      ? 'Suara Alam aktif · Klik untuk buka kontrol / matikan'
+      ? 'Suara Alam aktif · Klik untuk kontrol / matikan'
       : 'Putar Musik Suara Alam';
   };
 
@@ -568,7 +570,7 @@ const initAmbientSoundscape = () => {
     button.setAttribute('aria-pressed', String(enabled));
     button.setAttribute('aria-label', `${enabled ? 'Matikan' : 'Aktifkan'} suara alam`);
     button.title = enabled
-      ? (widget?.classList.contains('is-expanded') ? 'Klik untuk matikan suara alam' : 'Suara Alam aktif · Klik untuk kontrol/matikan')
+      ? (widget?.classList.contains('is-expanded') ? 'Klik untuk matikan suara alam' : 'Suara Alam aktif · Klik untuk kontrol / matikan')
       : 'Putar Musik Suara Alam';
     if (widget) {
       widget.classList.toggle('is-playing', enabled);
@@ -655,7 +657,14 @@ const initAmbientSoundscape = () => {
     }, 1100);
   };
 
-  button.addEventListener('click', async () => {
+  const handleToggleClick = async (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (dragCompletedRecently) return;
+    if (isAudioTransitioning) return;
+
     // 1. Jika audio sedang aktif dan widget dalam posisi bulat: buka panel lebar selama 5 detik
     if (activeSoundscape && widget && !widget.classList.contains('is-expanded')) {
       expandWidget();
@@ -679,11 +688,13 @@ const initAmbientSoundscape = () => {
       return;
     }
 
-    button.disabled = true;
+    isAudioTransitioning = true;
     let context;
     try {
       context = new AudioContextConstructor();
-      await context.resume();
+      if (context.state === 'suspended') {
+        await context.resume();
+      }
       const master = context.createGain();
       const now = context.currentTime;
       master.gain.setValueAtTime(0.0001, now);
@@ -704,7 +715,7 @@ const initAmbientSoundscape = () => {
       activeSoundscape = soundscape;
       master.gain.setTargetAtTime(volume * 0.001, context.currentTime, 0.65);
       setControlState(true, 'Suara alam aktif.');
-      expandWidget(); // Buka melebar selama 5 detik, lalu otomatis kembali bulat dalam keadaan tetap nyala
+      expandWidget();
       scheduleBirdCall(soundscape);
     } catch (error) {
       if (context && context.state !== 'closed') {
@@ -714,21 +725,24 @@ const initAmbientSoundscape = () => {
       setControlState(false, 'Suara alam tidak dapat diaktifkan. Coba lagi atau periksa izin audio browser.');
       collapseWidget();
     } finally {
-      button.disabled = false;
+      isAudioTransitioning = false;
     }
-  });
+  };
+
+  button.addEventListener('click', handleToggleClick);
+  if (label) {
+    label.addEventListener('click', handleToggleClick);
+  }
+  if (widget) {
+    widget.addEventListener('click', (e) => {
+      if (!widget.classList.contains('is-expanded')) {
+        handleToggleClick(e);
+      }
+    });
+  }
 
   if (widget) {
     widget.classList.add('is-draggable');
-
-    if (!widget.querySelector('.sound-drag-handle')) {
-      const handle = document.createElement('span');
-      handle.className = 'sound-drag-handle';
-      handle.setAttribute('aria-hidden', 'true');
-      handle.title = 'Tahan & geser untuk memindahkan posisi widget';
-      handle.innerHTML = '<svg width="7" height="13" viewBox="0 0 7 13" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="5" cy="2" r="1.2"/><circle cx="2" cy="6.5" r="1.2"/><circle cx="5" cy="6.5" r="1.2"/><circle cx="2" cy="11" r="1.2"/><circle cx="5" cy="11" r="1.2"/></svg>';
-      widget.prepend(handle);
-    }
 
     const posStorageKey = 'ecopath-sound-widget-pos';
     let isDragging = false;
@@ -777,7 +791,7 @@ const initAmbientSoundscape = () => {
     } catch (_) {}
 
     widget.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('input[type="range"]') || e.button !== 0) return;
+      if (e.target.closest('input[type="range"]') || e.target.closest('[data-sound-close]') || e.button !== 0) return;
 
       isDragging = true;
       hasMoved = false;
@@ -795,7 +809,8 @@ const initAmbientSoundscape = () => {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
 
-      if (!hasMoved && Math.hypot(dx, dy) < 6) return;
+      // Threshold 15px agar tap/klik normal di mouse atau layar sentuh tidak pernah terdeteksi sebagai drag
+      if (!hasMoved && Math.hypot(dx, dy) < 15) return;
 
       if (!hasMoved) {
         hasMoved = true;
@@ -821,11 +836,10 @@ const initAmbientSoundscape = () => {
       widget.classList.remove('is-dragging');
 
       if (hasMoved) {
-        const preventClick = (ev) => {
-          ev.stopImmediatePropagation();
-          ev.preventDefault();
-        };
-        window.addEventListener('click', preventClick, { capture: true, once: true });
+        dragCompletedRecently = true;
+        window.setTimeout(() => {
+          dragCompletedRecently = false;
+        }, 300);
 
         try {
           const rect = widget.getBoundingClientRect();
