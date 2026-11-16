@@ -629,6 +629,142 @@ const initAmbientSoundscape = () => {
       button.disabled = false;
     }
   });
+
+  const widget = button.closest('.sound-widget');
+  if (widget) {
+    widget.classList.add('is-draggable');
+
+    if (!widget.querySelector('.sound-drag-handle')) {
+      const handle = document.createElement('span');
+      handle.className = 'sound-drag-handle';
+      handle.setAttribute('aria-hidden', 'true');
+      handle.title = 'Tahan & geser untuk memindahkan posisi widget';
+      handle.innerHTML = '<svg width="7" height="13" viewBox="0 0 7 13" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="5" cy="2" r="1.2"/><circle cx="2" cy="6.5" r="1.2"/><circle cx="5" cy="6.5" r="1.2"/><circle cx="2" cy="11" r="1.2"/><circle cx="5" cy="11" r="1.2"/></svg>';
+      widget.prepend(handle);
+    }
+
+    const posStorageKey = 'ecopath-sound-widget-pos';
+    let isDragging = false;
+    let hasMoved = false;
+    let startX = 0;
+    let startY = 0;
+    let origLeft = 0;
+    let origTop = 0;
+
+    const clamp = (left, top) => {
+      const header = document.querySelector('.topbar') || document.querySelector('header');
+      const headerBottom = header ? header.getBoundingClientRect().bottom : 82;
+      const minTop = Math.max(10, headerBottom + 12);
+      const maxTop = Math.max(minTop, window.innerHeight - widget.offsetHeight - 12);
+      const minLeft = 12;
+      const maxLeft = Math.max(minLeft, window.innerWidth - widget.offsetWidth - 12);
+
+      return {
+        left: Math.min(Math.max(left, minLeft), maxLeft),
+        top: Math.min(Math.max(top, minTop), maxTop)
+      };
+    };
+
+    const applyPosition = (left, top) => {
+      const clamped = clamp(left, top);
+      widget.style.left = `${clamped.left}px`;
+      widget.style.top = `${clamped.top}px`;
+      widget.style.right = 'auto';
+      widget.style.bottom = 'auto';
+    };
+
+    try {
+      const saved = window.localStorage.getItem(posStorageKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (typeof parsed.left === 'number' && typeof parsed.top === 'number') {
+          let l = parsed.left;
+          let t = parsed.top;
+          if (typeof parsed.ratioX === 'number' && typeof parsed.ratioY === 'number') {
+            l = parsed.ratioX * window.innerWidth;
+            t = parsed.ratioY * window.innerHeight;
+          }
+          applyPosition(l, t);
+        }
+      }
+    } catch (_) {}
+
+    widget.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('input[type="range"]') || e.button !== 0) return;
+
+      isDragging = true;
+      hasMoved = false;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const rect = widget.getBoundingClientRect();
+      origLeft = rect.left;
+      origTop = rect.top;
+
+      try {
+        widget.setPointerCapture(e.pointerId);
+      } catch (_) {}
+    });
+
+    widget.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (!hasMoved && Math.hypot(dx, dy) < 4) return;
+
+      if (!hasMoved) {
+        hasMoved = true;
+        widget.classList.add('is-dragging');
+      }
+
+      applyPosition(origLeft + dx, origTop + dy);
+    });
+
+    const endDrag = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+
+      try {
+        widget.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+
+      widget.classList.remove('is-dragging');
+
+      if (hasMoved) {
+        const preventClick = (ev) => {
+          ev.stopImmediatePropagation();
+          ev.preventDefault();
+          widget.removeEventListener('click', preventClick, true);
+        };
+        widget.addEventListener('click', preventClick, true);
+        window.setTimeout(() => {
+          widget.removeEventListener('click', preventClick, true);
+        }, 120);
+
+        try {
+          const rect = widget.getBoundingClientRect();
+          window.localStorage.setItem(posStorageKey, JSON.stringify({
+            left: rect.left,
+            top: rect.top,
+            ratioX: rect.left / window.innerWidth,
+            ratioY: rect.top / window.innerHeight
+          }));
+        } catch (_) {}
+      }
+    };
+
+    widget.addEventListener('pointerup', endDrag);
+    widget.addEventListener('pointercancel', endDrag);
+
+    window.addEventListener('resize', () => {
+      if (widget.style.left && widget.style.top) {
+        const rect = widget.getBoundingClientRect();
+        applyPosition(rect.left, rect.top);
+      }
+    });
+  }
 };
 
 const initUserDrivenMotion = () => {
