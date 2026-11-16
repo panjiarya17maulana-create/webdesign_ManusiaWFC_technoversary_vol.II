@@ -453,12 +453,53 @@ const initAmbientSoundscape = () => {
 
   const label = button.querySelector('[data-sound-label]');
   const status = document.querySelector('[data-sound-status]');
+  const volumeInput = document.querySelector('[data-sound-volume]');
+  const volumeOutput = document.querySelector('[data-sound-volume-output]');
+  if (!label || !status || !volumeInput || !volumeOutput) {
+    console.error('Kontrol suara alam tidak lengkap pada halaman ini.');
+    return;
+  }
+
+  const volumeStorageKey = 'ecopath-sound-volume';
   let activeSoundscape = null;
+  let volumeStorageWarning = '';
+  let volume = 45;
+  try {
+    const storedVolume = window.localStorage.getItem(volumeStorageKey);
+    if (storedVolume !== null) {
+      const parsedVolume = Number(storedVolume);
+      if (Number.isFinite(parsedVolume) && parsedVolume >= 0 && parsedVolume <= 100) volume = parsedVolume;
+    }
+  } catch (error) {
+    volumeStorageWarning = 'Pengaturan volume tidak dapat dibaca dari penyimpanan browser.';
+    console.error('Gagal membaca pengaturan volume suara alam:', error);
+  }
+  volumeInput.value = String(volume);
+  volumeInput.setAttribute('aria-valuetext', `${volume}%`);
+  volumeOutput.textContent = `${volume}%`;
+  volumeInput.addEventListener('input', () => {
+    volume = Number(volumeInput.value);
+    volumeInput.setAttribute('aria-valuetext', `${volume}%`);
+    volumeOutput.textContent = `${volume}%`;
+    if (activeSoundscape) {
+      const now = activeSoundscape.context.currentTime;
+      activeSoundscape.master.gain.cancelScheduledValues(now);
+      activeSoundscape.master.gain.setTargetAtTime(volume * 0.001, now, 0.12);
+    }
+    try {
+      window.localStorage.setItem(volumeStorageKey, String(volume));
+    } catch (error) {
+      volumeStorageWarning = 'Volume berlaku di halaman ini, tetapi tidak dapat disimpan untuk halaman lain.';
+      status.textContent = volumeStorageWarning;
+      console.error('Gagal menyimpan pengaturan volume suara alam:', error);
+    }
+  });
+
   const setControlState = (enabled, message = '') => {
     button.setAttribute('aria-pressed', String(enabled));
     button.setAttribute('aria-label', `${enabled ? 'Matikan' : 'Aktifkan'} suara alam`);
     label.textContent = `Suara Alam: ${enabled ? 'On' : 'Off'}`;
-    status.textContent = message;
+    status.textContent = message || volumeStorageWarning;
   };
 
   const createBrownNoise = (context) => {
@@ -575,7 +616,7 @@ const initAmbientSoundscape = () => {
         birdTimer: 0
       };
       activeSoundscape = soundscape;
-      master.gain.setTargetAtTime(0.045, context.currentTime, 0.65);
+      master.gain.setTargetAtTime(volume * 0.001, context.currentTime, 0.65);
       setControlState(true, 'Suara alam aktif.');
       scheduleBirdCall(soundscape);
     } catch (error) {

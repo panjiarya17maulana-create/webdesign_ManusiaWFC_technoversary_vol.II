@@ -183,10 +183,17 @@
       </div>
     </div>
   </footer>
-  <button class="sound-toggle" type="button" aria-pressed="false" aria-label="Aktifkan suara alam" data-sound-toggle>
-    <span class="sound-equalizer" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span data-sound-label>Suara Alam: Off</span>
-  </button>
+  <div class="sound-widget" role="group" aria-label="Kontrol suara alam">
+    <button class="sound-toggle" type="button" aria-pressed="false" aria-label="Aktifkan suara alam" data-sound-toggle>
+      <span class="sound-equalizer" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span data-sound-label>Suara Alam: Off</span>
+    </button>
+    <label class="sound-volume">
+      <span>Volume</span>
+      <input id="sound-volume" type="range" min="0" max="100" step="1" value="45" aria-label="Volume suara alam" aria-valuetext="45%" data-sound-volume>
+      <span class="sound-volume-value" aria-hidden="true" data-sound-volume-output>45%</span>
+    </label>
+  </div>
   <span class="sr-only" role="status" aria-live="polite" data-sound-status></span>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script src="./app.js"></script>
