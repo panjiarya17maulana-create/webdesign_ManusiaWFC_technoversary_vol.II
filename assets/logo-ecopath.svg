@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#48a770" />
+      <stop offset="100%" stop-color="#226442" />
+    </linearGradient>
+    <linearGradient id="rootGrad" x1="0%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#2a6e4d" />
+      <stop offset="100%" stop-color="#143c2b" />
+    </linearGradient>
+    <linearGradient id="waterGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#278ba2" stop-opacity="0.2" />
+      <stop offset="50%" stop-color="#278ba2" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#278ba2" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="accentSprout" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b8e09e" />
+      <stop offset="100%" stop-color="#5eb87a" />
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#143c2b" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- Background Base Badge (Organic Rounded Shield) -->
+  <rect x="25" y="25" width="450" height="450" rx="95" fill="#f4f7f3" filter="url(#softGlow)" />
+
+  <!-- Circular Harmony Ring -->
+  <circle cx="250" cy="250" r="175" fill="none" stroke="#e1ebd9" stroke-width="4" stroke-dasharray="8 6" />
+
+  <!-- Water Ripple Waves at Base (Muara / Pesisir) -->
+  <path d="M140 375 C 190 365, 220 385, 270 375 C 320 365, 340 378, 370 372" fill="none" stroke="url(#waterGrad)" stroke-width="6" stroke-linecap="round" />
+  <path d="M165 398 C 205 390, 235 404, 280 395 C 315 388, 335 398, 350 394" fill="none" stroke="url(#waterGrad)" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+
+  <!-- Mangrove Stilt Roots (Akar Tunjang - Foundation & Resilience) -->
+  <g id="roots">
+    <!-- Center Left Arch -->
+    <path d="M250 240 Q 215 285, 175 355 Q 165 372, 150 380" fill="none" stroke="url(#rootGrad)" stroke-width="14" stroke-linecap="round" />
+    <!-- Center Right Arch -->
+    <path d="M250 240 Q 285 285, 325 355 Q 335 372, 350 380" fill="none" stroke="url(#rootGrad)" stroke-width="14" stroke-linecap="round" />
+    <!-- Secondary Inner Root Left -->
+    <path d="M242 270 Q 218 315, 205 375" fill="none" stroke="url(#rootGrad)" stroke-width="10" stroke-linecap="round" />
+    <!-- Secondary Inner Root Right -->
+    <path d="M258 270 Q 282 315, 295 375" fill="none" stroke="url(#rootGrad)" stroke-width="10" stroke-linecap="round" />
+    <!-- Central Anchor Taproot -->
+    <path d="M250 250 L 250 360" fill="none" stroke="url(#rootGrad)" stroke-width="12" stroke-linecap="round" />
+  </g>
+
+  <!-- Mangrove Foliage & Sprout (Daun & Tunas Utama) -->
+  <g id="foliage">
+    <!-- Main Center Leaf -->
+    <path d="M250 100 C 180 160, 215 240, 250 255 C 285 240, 320 160, 250 100 Z" fill="url(#leafGrad)" />
+    <!-- Inner Leaf Vein Line -->
+    <path d="M250 115 Q 250 180, 250 250" fill="none" stroke="#8ce2ad" stroke-width="4" stroke-linecap="round" opacity="0.75" />
+    <!-- Left Leaf Sprout -->
+    <path d="M245 185 C 190 170, 160 215, 220 238 C 235 243, 243 235, 245 185 Z" fill="url(#accentSprout)" />
+    <!-- Right Leaf Sprout -->
+    <path d="M255 160 C 315 150, 335 195, 280 215 C 265 220, 258 210, 255 160 Z" fill="url(#leafGrad)" opacity="0.9" />
+    <!-- Sun/Dawn Energy Dot (representing vitality and sunrise over Surabaya East coast) -->
+    <circle cx="250" cy="78" r="9" fill="#e5b452" />
+  </g>
+</svg>
