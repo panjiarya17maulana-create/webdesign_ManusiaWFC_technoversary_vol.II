@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#173e35">
   <meta name="description" content="Jelajahi Ekowisata Mangrove Gunung Anyar, Surabaya. Kenali konservasi pesisir, biodiversitas, dan cara ikut menjaga benteng hijau kota.">
+  <meta property="og:title" content="EcoPath Gunung Anyar - Jelajahi Benteng Hijau Surabaya">
+  <meta property="og:description" content="Jelajahi Ekowisata Mangrove Gunung Anyar, Surabaya. Kenali konservasi pesisir, biodiversitas, dan cara ikut menjaga benteng hijau kota.">
+  <meta property="og:image" content="https://panjiarya17maulana-create.github.io/webdesign_ManusiaWFC_technoversary_vol.II/mangrove.jpg">
+  <meta property="og:type" content="website">
   <title>EcoPath Gunung Anyar - Jelajahi Benteng Hijau Surabaya</title>
   <link rel="icon" href="./assets/hero-mangrove.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
@@ -14,7 +18,7 @@
 <body class="home-page">
   <div class="announcement">
     <div class="wrap">
-      <span>🌿 Satu langkah kecil untuk pesisir yang lebih lestari</span>
+      <span>Satu langkah kecil untuk pesisir yang lebih lestari</span>
       <span>Surabaya Timur · Jawa Timur</span>
     </div>
   </div>
@@ -49,18 +53,13 @@
               <a class="btn btn-outline" href="./about.html">Kenali ekosistem</a>
             </div>
             <div class="hero-note">
-              <div class="avatar-stack">
-                <span>🌱</span>
-                <span>🦀</span>
-                <span>🐦</span>
-              </div>
               <span>Ruang hidup bersama, untuk kita dan generasi berikutnya.</span>
             </div>
           </div>
           <div class="hero-art" data-aos="fade-left">
-            <img class="hero-image" src="./mangrove.jpg" alt="Pintu masuk Kawasan Mangrove Gunung Anyar Surabaya">
-            <div class="floating-note note-top"><strong>56,7 ha</strong>ruang hijau pesisir</div>
-            <div class="floating-note note-bottom">
+            <img class="hero-image" src="./mangrovedua.jpg" alt="Jalur kayu yang membelah hutan mangrove Gunung Anyar">
+            <div class="floating-note note-top float-ambient"><strong>56,7 ha</strong>ruang hijau pesisir</div>
+            <div class="floating-note note-bottom float-ambient">
               <span class="note-icon" data-icon="leaf"></span>
               <span><strong>Blue carbon</strong>penjaga iklim alami</span>
             </div>
@@ -68,15 +67,15 @@
         </div>
         <div class="stats-strip" data-aos="fade-up">
           <div class="stat">
-            <strong>±56,7 ha</strong>
+            <strong data-count="56.7" data-count-decimals="1" data-count-prefix="±" data-count-suffix=" ha">±56,7 ha</strong>
             <span>kawasan mangrove</span>
           </div>
           <div class="stat">
-            <strong>11 km</strong>
+            <strong data-count="11" data-count-suffix=" km">11 km</strong>
             <span>garis pantai Surabaya</span>
           </div>
           <div class="stat">
-            <strong>3 ekosistem</strong>
+            <strong data-count="3" data-count-suffix=" ekosistem">3 ekosistem</strong>
             <span>muara · pesisir · mangrove</span>
           </div>
           <div class="stat">
@@ -100,13 +99,19 @@
             <span class="story-tag">Tantangan pesisir</span>
             <h3>Abrasi & sampah mengubah wajah pantai.</h3>
             <p>Gelombang, pasang surut, dan sampah yang terbawa aliran dapat menekan habitat pesisir dan mengikis garis pantai.</p>
-            <div class="story-visual" aria-hidden="true">🌊</div>
+            <div class="story-visual" aria-hidden="true">
+              <img src="./mangrovedua.jpg" alt="">
+              <span>GARIS PESISIR</span>
+            </div>
           </article>
           <article class="story-card story-answer" data-aos="fade-up" data-aos-delay="100">
             <span class="story-tag">Benteng hijau</span>
             <h3>Akar mangrove merawat kehidupan.</h3>
             <p>Akar menahan sedimen, meredam energi gelombang, menyediakan habitat, dan menyimpan karbon biru.</p>
-            <div class="story-visual" aria-hidden="true">🌱</div>
+            <div class="story-visual" aria-hidden="true">
+              <img src="./bakau-minyak.jpg" alt="">
+              <span>AKAR MANGROVE</span>
+            </div>
           </article>
         </div>
       </div>
@@ -128,7 +133,7 @@
           </div>
           <div class="habitat-panels">
             <article class="habitat-panel" id="panel-akar" role="tabpanel" aria-labelledby="tab-akar" tabindex="0" data-habitat-panel="akar">
-              <span class="habitat-emoji" aria-hidden="true">🌱</span>
+              <img class="habitat-visual" src="./bakau-minyak.jpg" alt="Akar bakau yang menopang habitat pesisir">
               <div>
                 <span class="habitat-label">PENJAGA GARIS PANTAI</span>
                 <h3>Akar yang merawat tepian.</h3>
@@ -137,7 +142,7 @@
               </div>
             </article>
             <article class="habitat-panel" id="panel-penghuni" role="tabpanel" aria-labelledby="tab-penghuni" tabindex="0" data-habitat-panel="penghuni" hidden>
-              <span class="habitat-emoji" aria-hidden="true">🦀</span>
+              <img class="habitat-visual" src="./kepiting.jpg" alt="Kepiting bakau di habitat pesisir">
               <div>
                 <span class="habitat-label">RUMAH BAGI BANYAK SPESIES</span>
                 <h3>Hidup saling terhubung.</h3>
@@ -146,7 +151,7 @@
               </div>
             </article>
             <article class="habitat-panel" id="panel-karbon" role="tabpanel" aria-labelledby="tab-karbon" tabindex="0" data-habitat-panel="karbon" hidden>
-              <span class="habitat-emoji" aria-hidden="true">🌍</span>
+              <img class="habitat-visual" src="./api-api.jpg" alt="Vegetasi mangrove yang menyimpan karbon alami">
               <div>
                 <span class="habitat-label">PENYIMPAN KARBON ALAMI</span>
                 <h3>Manfaat yang tertanam lama.</h3>
@@ -165,7 +170,7 @@
           <h2>Siap jadi<br>Penjaga Pesisir?</h2>
           <p>Jawab tiga pertanyaan singkat seputar mangrove dan etika berkunjung. Satu menit untuk membawa pulang kebiasaan baik.</p>
           <div class="quiz-stamp">
-            <span aria-hidden="true">🌿</span>
+            <img class="quiz-stamp__photo" src="./burung-pesisir.jpg" alt="">
             <span><strong>3 pertanyaan</strong><small>Belajar kecil, dampak berarti.</small></span>
           </div>
         </div>
@@ -184,12 +189,40 @@
             <button class="btn btn-primary quiz-next" data-quiz-next type="button" hidden>Lanjutkan <span data-icon="arrow"></span></button>
           </div>
           <div class="quiz-result" data-quiz-result hidden>
-            <span class="quiz-result-icon" aria-hidden="true">🌱</span>
+            <img class="quiz-result-visual" src="./mangrovedua.jpg" alt="">
             <span class="quiz-kicker">MISI SELESAI</span>
             <h3 data-quiz-title></h3>
             <p data-quiz-summary></p>
             <button class="btn btn-primary" data-quiz-retry type="button">Main lagi <span data-icon="arrow"></span></button>
           </div>
+        </div>
+      </div>
+    </section>
+    <section class="quick-visit" aria-labelledby="quick-visit-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Rencanakan kunjungan</span>
+            <h2 id="quick-visit-title">Info kunjungan cepat.</h2>
+          </div>
+          <p>Jadwal dapat berubah; konfirmasikan informasi terbaru kepada pengelola sebelum berangkat.</p>
+        </div>
+        <div class="quick-visit-grid">
+          <article class="quick-visit-card">
+            <span class="quick-visit-label">Jam operasional</span>
+            <strong>08.00–16.00 WIB</strong>
+            <p>Periksa kembali jam buka sebelum berkunjung.</p>
+          </article>
+          <article class="quick-visit-card">
+            <span class="quick-visit-label">Lokasi</span>
+            <strong>Gunung Anyar Tambak</strong>
+            <p>Surabaya Timur, Jawa Timur.</p>
+          </article>
+          <article class="quick-visit-card">
+            <span class="quick-visit-label">Aktivitas utama</span>
+            <strong>Susur sungai & edukasi</strong>
+            <p>Kenali ekosistem pesisir dengan tetap menjaga habitat.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -208,10 +241,10 @@
               <div id="eco-map" role="application" aria-label="Peta interaktif Ekowisata Mangrove Gunung Anyar"></div>
             </div>
             <div class="map-details">
-              <div class="map-point">⚓ Dermaga susur sungai<span>Titik keberangkatan wisata air</span></div>
-              <div class="map-point">🔭 Menara pandang 12 m<span>Area melihat lanskap pesisir</span></div>
-              <div class="map-point">🪵 Boardwalk kayu<span>Jalur jalan kaki di kawasan</span></div>
-              <div class="map-point">🌱 Area pembibitan<span>Ruang edukasi dan persemaian</span></div>
+              <div class="map-point"><img src="./mangrovedua.jpg" alt=""><div>Dermaga susur sungai<span>Titik keberangkatan wisata air</span></div></div>
+              <div class="map-point"><img src="./mangrove.jpg" alt=""><div>Menara pandang 12 m<span>Area melihat lanskap pesisir</span></div></div>
+              <div class="map-point"><img src="./bakau-minyak.jpg" alt=""><div>Boardwalk kayu<span>Jalur jalan kaki di kawasan</span></div></div>
+              <div class="map-point"><img src="./api-api.jpg" alt=""><div>Area pembibitan<span>Ruang edukasi dan persemaian</span></div></div>
             </div>
           </div>
           <div class="carbon-card" data-aos="fade-left">
@@ -249,7 +282,7 @@
         </div>
         <div class="visit-planner" data-visit-checklist>
           <div class="visit-intro">
-            <span class="visit-stamp" aria-hidden="true">🎒</span>
+            <img class="visit-stamp" src="./mangrovedua.jpg" alt="">
             <h3>Siap menjelajah dengan bijak?</h3>
             <p>Beberapa kebiasaan sederhana membuat kunjungan lebih nyaman sekaligus ramah habitat.</p>
             <div class="visit-progress-track" role="progressbar" aria-label="Persiapan kunjungan" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" data-visit-progress>
@@ -309,6 +342,11 @@
       </div>
     </section>
   </main>
+  <svg class="coastal-wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path class="coastal-wave__back" d="M0 48C180 90 300 10 480 48S780 90 960 48s300-38 480 0v72H0Z"></path>
+    <path class="coastal-wave__middle" d="M0 68c180-42 300 42 480 0s300-42 480 0 300 42 480 0v52H0Z"></path>
+    <path class="coastal-wave__front" d="M0 83c180 35 300-35 480 0s300 35 480 0 300-35 480 0v37H0Z"></path>
+  </svg>
   <footer class="footer">
     <div class="wrap">
       <div class="footer-grid">
