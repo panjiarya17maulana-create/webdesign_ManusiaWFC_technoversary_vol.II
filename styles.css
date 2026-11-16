@@ -4791,12 +4791,44 @@ body.home-page .coastal-wave+.footer {
   background: rgba(16, 47, 41, .94);
   box-shadow: 0 10px 28px rgba(8, 31, 26, .25);
   backdrop-filter: blur(10px);
-  transition: transform .2s ease, border-color .2s ease
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  touch-action: none;
+  user-select: none;
 }
 
 .sound-widget:hover {
   transform: translateY(-2px);
   border-color: #d9f16a
+}
+
+.sound-widget.is-draggable {
+  cursor: grab;
+}
+
+.sound-widget.is-dragging {
+  cursor: grabbing !important;
+  transition: none !important;
+  transform: scale(1.03) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .45), 0 0 0 2px rgba(217, 241, 106, .8) !important;
+  opacity: .95;
+}
+
+.sound-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(217, 241, 106, .65);
+  cursor: grab;
+  padding-right: 2px;
+  transition: color .2s ease;
+}
+
+.sound-widget:hover .sound-drag-handle {
+  color: #d9f16a;
+}
+
+.sound-widget.is-dragging .sound-drag-handle {
+  cursor: grabbing !important;
 }
 
 .sound-toggle {
