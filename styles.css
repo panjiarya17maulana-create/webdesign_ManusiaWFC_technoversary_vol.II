@@ -634,11 +634,11 @@ details[open]>.benefit-summary .details-toggle:after,details[open]>.guideline-su
   .cinematic-hero__actions{align-items:flex-start;flex-direction:column;gap:16px}
   body.home-page .hero{padding:30px 0 24px}
   body.home-page .hero-grid{display:flex;min-height:555px;flex-direction:column;justify-content:flex-end}
-  body.home-page .hero-copy{align-self:end;padding:28px 0 38px}
+  body.home-page .hero-copy{align-self:end;padding:28px 20px 38px}
   body.home-page .hero-art{border-radius:22px}
   body.home-page .hero-image{border-radius:22px}
   body.home-page .hero-art:after{background:linear-gradient(180deg,rgba(8,31,26,.2),rgba(8,31,26,.3) 34%,rgba(8,31,26,.86))}
-  body.home-page .hero-copy h1{font-size:clamp(42px,11vw,56px)}
+  body.home-page .hero-copy h1{font-size:clamp(35px,7.8vw,46px)}
   body.home-page .hero-note{font-size:11px}
   body.home-page .floating-note{display:none}
   body.home-page .stats-strip{grid-template-columns:1fr 1fr;margin-top:12px}
@@ -726,6 +726,8 @@ body.home-page .coastal-wave+.footer{margin-top:0}
   .spotlight-card:before{display:none}
 }
 @media(min-width:901px){
+  body.home-page .hero-copy{max-width:860px;padding:48px clamp(32px,4vw,56px) 34px}
+  body.home-page .hero-copy h1{margin-block:20px}
   body.home-page .hero-copy .lead{font-size:18px}
   body.home-page .hero .stats-strip{margin-top:18px;padding:24px 18px}
   body.home-page .hero .stat{padding-block:5px}
@@ -734,8 +736,8 @@ body.home-page .coastal-wave+.footer{margin-top:0}
 }
 @media(min-width:701px) and (max-width:900px){
   body.home-page .hero .wrap{width:calc(100% - 72px)}
-  body.home-page .hero-copy{padding:48px 12px 34px}
-  body.home-page .hero-copy h1{margin-block:20px}
+  body.home-page .hero-copy{max-width:620px;padding:48px clamp(30px,4vw,36px) 34px}
+  body.home-page .hero-copy h1{margin-block:20px;font-size:clamp(42px,5.3vw,48px)}
   body.home-page .hero-copy .lead{font-size:18px;line-height:1.75}
   body.home-page .hero .stats-strip{margin-top:24px;padding:23px 16px}
   body.home-page .hero .stat{padding-inline:12px}
