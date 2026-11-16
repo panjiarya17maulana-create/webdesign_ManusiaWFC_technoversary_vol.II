@@ -44,6 +44,14 @@ Tidak diperlukan instalasi package atau proses build. Website menggunakan HTML, 
 
 ## Teknologi
 
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white)
+![OpenStreetMap](https://img.shields.io/badge/OpenStreetMap-7EBC6F?style=for-the-badge&logo=openstreetmap&logoColor=white)
+![AOS](https://img.shields.io/badge/AOS-Animate_on_Scroll-blueviolet?style=for-the-badge)
+![Pannellum](https://img.shields.io/badge/Pannellum-360°_Panorama-orange?style=for-the-badge)
+
 - HTML5, CSS3, dan JavaScript
 - [Leaflet](https://leafletjs.com/) dan OpenStreetMap untuk peta
 - [AOS](https://michalsnik.github.io/aos/) untuk animasi saat menggulir
