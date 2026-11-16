@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e35">
+  <meta name="description" content="Jelajahi Ekowisata Mangrove Gunung Anyar, Surabaya. Kenali konservasi pesisir, biodiversitas, dan cara ikut menjaga benteng hijau kota.">
+  <title>EcoPath Gunung Anyar - Jelajahi Benteng Hijau Surabaya</title>
+  <link rel="icon" href="./assets/hero-mangrove.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+</head>
+<body class="home-page">
+  <div class="announcement">
+    <div class="wrap">
+      <span>🌿 Satu langkah kecil untuk pesisir yang lebih lestari</span>
+      <span>Surabaya Timur · Jawa Timur</span>
+    </div>
+  </div>
+  <header class="topbar">
+    <nav class="wrap nav-row" aria-label="Navigasi utama">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark" data-icon="leaf"></span>
+        <span class="brand-name">EcoPath<span>Gunung Anyar</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="./index.html" aria-current="page">Beranda</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./gallery.html">Jelajah</a>
+        <a href="./contact.html">Kontak</a>
+      </div>
+      <div class="nav-actions">
+        <a class="btn btn-primary" href="./contact.html">Ikut Menanam <span data-icon="arrow"></span></a>
+        <button class="menu-toggle" aria-label="Buka navigasi" aria-expanded="false" data-icon="menu"></button>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="hero-copy" data-aos="fade-up">
+            <span class="eyebrow">Wisata alam · Konservasi pesisir</span>
+            <h1>Di sini, alam<br>menemukan <em>jalannya.</em></h1>
+            <p class="lead">Menyusuri akar mangrove, mengenal kehidupan pesisir, dan menjaga benteng hijau yang melindungi Surabaya Timur.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#peta">Jelajahi konservasi <span data-icon="arrow"></span></a>
+              <a class="btn btn-outline" href="./about.html">Kenali ekosistem</a>
+            </div>
+            <div class="hero-note">
+              <div class="avatar-stack">
+                <span>🌱</span>
+                <span>🦀</span>
+                <span>🐦</span>
+              </div>
+              <span>Ruang hidup bersama, untuk kita dan generasi berikutnya.</span>
+            </div>
+          </div>
+          <div class="hero-art" data-aos="fade-left">
+            <img class="hero-image" src="./mangrove.jpg" alt="Pintu masuk Kawasan Mangrove Gunung Anyar Surabaya">
+            <div class="floating-note note-top"><strong>56,7 ha</strong>ruang hijau pesisir</div>
+            <div class="floating-note note-bottom">
+              <span class="note-icon" data-icon="leaf"></span>
+              <span><strong>Blue carbon</strong>penjaga iklim alami</span>
+            </div>
+          </div>
+        </div>
+        <div class="stats-strip" data-aos="fade-up">
+          <div class="stat">
+            <strong>±56,7 ha</strong>
+            <span>kawasan mangrove</span>
+          </div>
+          <div class="stat">
+            <strong>11 km</strong>
+            <span>garis pantai Surabaya</span>
+          </div>
+          <div class="stat">
+            <strong>3 ekosistem</strong>
+            <span>muara · pesisir · mangrove</span>
+          </div>
+          <div class="stat">
+            <strong>1 tujuan</strong>
+            <span>alam lestari bersama</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="konservasi">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Dari ancaman menuju harapan</span>
+            <h2>Alam memberi tanda.<br>Kita bisa menjawabnya.</h2>
+          </div>
+          <p>Di garis pantai, setiap akar punya peran. Memahami tantangan adalah langkah pertama menjaga ekosistem.</p>
+        </div>
+        <div class="story-grid">
+          <article class="story-card story-threat" data-aos="fade-up">
+            <span class="story-tag">Tantangan pesisir</span>
+            <h3>Abrasi & sampah mengubah wajah pantai.</h3>
+            <p>Gelombang, pasang surut, dan sampah yang terbawa aliran dapat menekan habitat pesisir dan mengikis garis pantai.</p>
+            <div class="story-visual" aria-hidden="true">🌊</div>
+          </article>
+          <article class="story-card story-answer" data-aos="fade-up" data-aos-delay="100">
+            <span class="story-tag">Benteng hijau</span>
+            <h3>Akar mangrove merawat kehidupan.</h3>
+            <p>Akar menahan sedimen, meredam energi gelombang, menyediakan habitat, dan menyimpan karbon biru.</p>
+            <div class="story-visual" aria-hidden="true">🌱</div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section-tight habitat-section" id="jelajah-habitat">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Jelajah mikrohabitat</span>
+            <h2>Satu hutan, banyak kehidupan.</h2>
+          </div>
+          <p>Pilih bagian yang ingin kamu kenali. Setiap unsur punya peran dalam menjaga keseimbangan pesisir.</p>
+        </div>
+        <div class="habitat-explorer">
+          <div class="habitat-tabs" role="tablist" aria-label="Pilih bagian ekosistem mangrove">
+            <button class="habitat-tab" id="tab-akar" type="button" role="tab" aria-selected="true" aria-controls="panel-akar" data-habitat-tab="akar">Akar mangrove <span>01</span></button>
+            <button class="habitat-tab" id="tab-penghuni" type="button" role="tab" aria-selected="false" aria-controls="panel-penghuni" data-habitat-tab="penghuni" tabindex="-1">Penghuni pesisir <span>02</span></button>
+            <button class="habitat-tab" id="tab-karbon" type="button" role="tab" aria-selected="false" aria-controls="panel-karbon" data-habitat-tab="karbon" tabindex="-1">Karbon biru <span>03</span></button>
+          </div>
+          <div class="habitat-panels">
+            <article class="habitat-panel" id="panel-akar" role="tabpanel" aria-labelledby="tab-akar" tabindex="0" data-habitat-panel="akar">
+              <span class="habitat-emoji" aria-hidden="true">🌱</span>
+              <div>
+                <span class="habitat-label">PENJAGA GARIS PANTAI</span>
+                <h3>Akar yang merawat tepian.</h3>
+                <p>Jalinan akar membantu menahan sedimen dan meredam energi gelombang. Di sela-selanya, biota kecil menemukan tempat berlindung.</p>
+                <a class="habitat-link" href="./about.html">Kenali fungsi mangrove <span data-icon="arrow"></span></a>
+              </div>
+            </article>
+            <article class="habitat-panel" id="panel-penghuni" role="tabpanel" aria-labelledby="tab-penghuni" tabindex="0" data-habitat-panel="penghuni" hidden>
+              <span class="habitat-emoji" aria-hidden="true">🦀</span>
+              <div>
+                <span class="habitat-label">RUMAH BAGI BANYAK SPESIES</span>
+                <h3>Hidup saling terhubung.</h3>
+                <p>Kepiting, ikan kecil, moluska, dan burung memanfaatkan kawasan mangrove sebagai bagian dari habitatnya. Mengamati dari jalur yang diizinkan membantu kita menjaga ruang hidup mereka.</p>
+                <a class="habitat-link" href="./gallery.html">Lihat biodiversitas <span data-icon="arrow"></span></a>
+              </div>
+            </article>
+            <article class="habitat-panel" id="panel-karbon" role="tabpanel" aria-labelledby="tab-karbon" tabindex="0" data-habitat-panel="karbon" hidden>
+              <span class="habitat-emoji" aria-hidden="true">🌍</span>
+              <div>
+                <span class="habitat-label">PENYIMPAN KARBON ALAMI</span>
+                <h3>Manfaat yang tertanam lama.</h3>
+                <p>Ekosistem mangrove menyimpan karbon pada biomassa dan sedimennya. Menjaga habitat tetap sehat berarti ikut merawat salah satu penyangga iklim pesisir.</p>
+                <a class="habitat-link" href="#peta">Coba hitung jejak perjalanan <span data-icon="arrow"></span></a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section quiz-section" id="misi">
+      <div class="wrap quiz-layout">
+        <div class="quiz-intro">
+          <span class="eyebrow">Belajar sambil menjelajah</span>
+          <h2>Siap jadi<br>Penjaga Pesisir?</h2>
+          <p>Jawab tiga pertanyaan singkat seputar mangrove dan etika berkunjung. Satu menit untuk membawa pulang kebiasaan baik.</p>
+          <div class="quiz-stamp">
+            <span aria-hidden="true">🌿</span>
+            <span><strong>3 pertanyaan</strong><small>Belajar kecil, dampak berarti.</small></span>
+          </div>
+        </div>
+        <div class="quiz-card" data-quiz>
+          <div class="quiz-card-top">
+            <span class="quiz-kicker">MISI PENJAGA PESISIR</span>
+            <span class="quiz-step" data-quiz-step>01 <span>/ 03</span></span>
+          </div>
+          <div class="quiz-progress" role="progressbar" aria-label="Progres kuis" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0">
+            <span data-quiz-progress></span>
+          </div>
+          <div class="quiz-stage">
+            <p class="quiz-question" data-quiz-question tabindex="-1" aria-live="polite"></p>
+            <div class="quiz-options" data-quiz-options></div>
+            <p class="quiz-feedback" data-quiz-feedback role="status" aria-live="polite" hidden></p>
+            <button class="btn btn-primary quiz-next" data-quiz-next type="button" hidden>Lanjutkan <span data-icon="arrow"></span></button>
+          </div>
+          <div class="quiz-result" data-quiz-result hidden>
+            <span class="quiz-result-icon" aria-hidden="true">🌱</span>
+            <span class="quiz-kicker">MISI SELESAI</span>
+            <h3 data-quiz-title></h3>
+            <p data-quiz-summary></p>
+            <button class="btn btn-primary" data-quiz-retry type="button">Main lagi <span data-icon="arrow"></span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-tight" id="peta">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Temukan jalurnya</span>
+            <h2>Kenali kawasan mangrove.</h2>
+          </div>
+          <p>Peta interaktif dengan titik fasilitas untuk membantu merencanakan kunjunganmu.</p>
+        </div>
+        <div class="split-layout">
+          <div>
+            <div class="map-card">
+              <div id="eco-map" role="application" aria-label="Peta interaktif Ekowisata Mangrove Gunung Anyar"></div>
+            </div>
+            <div class="map-details">
+              <div class="map-point">⚓ Dermaga susur sungai<span>Titik keberangkatan wisata air</span></div>
+              <div class="map-point">🔭 Menara pandang 12 m<span>Area melihat lanskap pesisir</span></div>
+              <div class="map-point">🪵 Boardwalk kayu<span>Jalur jalan kaki di kawasan</span></div>
+              <div class="map-point">🌱 Area pembibitan<span>Ruang edukasi dan persemaian</span></div>
+            </div>
+          </div>
+          <div class="carbon-card" data-aos="fade-left">
+            <span class="eyebrow">Perjalanan lebih bijak</span>
+            <h3>Hitung jejak perjalananmu.</h3>
+            <p class="fine-print" style="font-size:13px;margin-bottom:20px">Masukkan jarak satu arah ke kawasan. Kami hitung estimasi perjalanan pulang-pergi.</p>
+            <label for="distance">Jarak dari rumah</label>
+            <div class="input-wrap">
+              <input id="distance" type="number" min="0" max="2000" value="10" inputmode="decimal" aria-describedby="carbon-note">
+              <span class="input-unit">km</span>
+            </div>
+            <div class="carbon-results">
+              <div class="result-box">
+                <span>Estimasi emisi CO₂</span>
+                <strong id="emission-result">2.4 kg</strong>
+              </div>
+              <div class="result-box">
+                <span>Setara bibit mangrove*</span>
+                <strong id="seedling-result">1 bibit</strong>
+              </div>
+            </div>
+            <p class="fine-print" id="carbon-note">*Asumsi 0,12 kg CO₂/km untuk mobil dan 10 kg CO₂/tahun per bibit; angka edukasi, bukan pengukuran resmi. Berbagi kendaraan atau transportasi umum membantu mengurangi emisi.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-tight visit-section" id="persiapan">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Sebelum berangkat</span>
+            <h2>Checklist penjaga pesisir.</h2>
+          </div>
+          <p>Tandai persiapanmu. Checklist tersimpan di perangkat ini agar bisa dilanjutkan nanti.</p>
+        </div>
+        <div class="visit-planner" data-visit-checklist>
+          <div class="visit-intro">
+            <span class="visit-stamp" aria-hidden="true">🎒</span>
+            <h3>Siap menjelajah dengan bijak?</h3>
+            <p>Beberapa kebiasaan sederhana membuat kunjungan lebih nyaman sekaligus ramah habitat.</p>
+            <div class="visit-progress-track" role="progressbar" aria-label="Persiapan kunjungan" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" data-visit-progress>
+              <span data-visit-progress-fill></span>
+            </div>
+            <p class="visit-progress-label" data-visit-progress-label aria-live="polite">0 dari 4 langkah siap</p>
+          </div>
+          <div class="visit-checklist">
+            <label class="visit-check">
+              <input type="checkbox" data-visit-check>
+              <span class="visit-checkmark" aria-hidden="true"></span>
+              <span>Cek jam buka dan aturan terbaru sebelum berangkat.</span>
+            </label>
+            <label class="visit-check">
+              <input type="checkbox" data-visit-check>
+              <span class="visit-checkmark" aria-hidden="true"></span>
+              <span>Bawa botol minum isi ulang dan tas untuk sampahmu.</span>
+            </label>
+            <label class="visit-check">
+              <input type="checkbox" data-visit-check>
+              <span class="visit-checkmark" aria-hidden="true"></span>
+              <span>Kenakan alas kaki nyaman dan tetap di jalur yang diizinkan.</span>
+            </label>
+            <label class="visit-check">
+              <input type="checkbox" data-visit-check>
+              <span class="visit-checkmark" aria-hidden="true"></span>
+              <span>Siapkan kamera; amati satwa dari jarak aman tanpa memberi makan.</span>
+            </label>
+            <button class="visit-reset" type="button" data-visit-reset>Reset checklist</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-tight">
+      <div class="wrap">
+        <div class="adoption">
+          <div>
+            <span class="eyebrow" style="color:#c5dc91">Tumbuh bersama</span>
+            <h2>Adopsi mangrove,<br>rawat masa depan.</h2>
+            <p>Dukung upaya pembibitan dan restorasi melalui aksi yang bertanggung jawab. Setiap kontribusi menumbuhkan kepedulian.</p>
+            <p class="adoption-note">Pilih langkah yang sesuai dengan waktumu. Informasi kegiatan dapat dikonfirmasi langsung kepada pengelola.</p>
+          </div>
+          <div class="adoption-options">
+            <a class="adoption-option" href="./contact.html#relawan">
+              <span>01 · IKUT BERGERAK</span>
+              <strong>Jadi relawan</strong>
+              <span class="adoption-arrow" data-icon="arrow"></span>
+            </a>
+            <a class="adoption-option" href="./about.html">
+              <span>02 · MULAI BELAJAR</span>
+              <strong>Pahami konservasi</strong>
+              <span class="adoption-arrow" data-icon="arrow"></span>
+            </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="./index.html">
+            <span class="brand-mark" data-icon="leaf"></span>
+            <span class="brand-name">EcoPath<span>Gunung Anyar</span></span>
+          </a>
+          <p class="footer-description">Cerita tentang ekowisata dan konservasi mangrove di pesisir timur Surabaya. Kenali, kunjungi, jaga bersama.</p>
+        </div>
+        <div>
+          <h3>Jelajahi</h3>
+          <div class="footer-links">
+            <a href="./about.html">Tentang kawasan</a>
+            <a href="./gallery.html">Biodiversitas</a>
+            <a href="./gallery.html#tur">Tur virtual</a>
+          </div>
+        </div>
+        <div>
+          <h3>Terhubung</h3>
+          <div class="footer-links">
+            <a href="./contact.html">Info kunjungan</a>
+            <a href="./contact.html#relawan">Jadi relawan</a>
+            <span>Gunung Anyar, Surabaya Timur</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year></span> EcoPath Gunung Anyar · Konsep edukasi konservasi</span>
+        <span>Manusia WFC</span>
+      </div>
+    </div>
+  </footer>
+  <div class="toast" role="status"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

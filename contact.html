@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e35">
+  <meta name="description" content="Hubungi EcoPath Gunung Anyar untuk info kunjungan, relawan penanaman, dan dukungan bibit mangrove.">
+  <title>Kontak & Relawan — EcoPath Gunung Anyar</title>
+  <link rel="icon" href="./assets/hero-mangrove.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="announcement">
+    <div class="wrap">
+      <span>🌿 Satu langkah kecil untuk pesisir yang lebih lestari</span>
+      <span>Surabaya Timur · Jawa Timur</span>
+    </div>
+  </div>
+  <header class="topbar">
+    <nav class="wrap nav-row" aria-label="Navigasi utama">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark" data-icon="leaf"></span>
+        <span class="brand-name">EcoPath<span>Gunung Anyar</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="./index.html">Beranda</a>
+        <a href="./about.html">Tentang</a>
+        <a href="./gallery.html">Jelajah</a>
+        <a href="./contact.html" aria-current="page">Kontak</a>
+      </div>
+      <div class="nav-actions">
+        <a class="btn btn-primary" href="#relawan">Ikut Menanam <span data-icon="arrow"></span></a>
+        <button class="menu-toggle" aria-label="Buka navigasi" aria-expanded="false" data-icon="menu"></button>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="page-hero contact-hero">
+      <div class="contact-hero__backdrop" aria-hidden="true">
+        <img src="./mangrove.jpg" alt="">
+      </div>
+      <div class="wrap contact-hero__content">
+        <span class="contact-hero__tag">Pesisir Gunung Anyar · Surabaya</span>
+        <span class="eyebrow">Mari terhubung</span>
+        <h1>Konservasi tumbuh<br>dari aksi bersama.</h1>
+        <p class="lead">Tertarik ikut menjaga mangrove? Sampaikan pertanyaan, ide, atau minatmu bergabung dalam gerakan relawan.</p>
+        <div class="contact-hero__actions">
+          <a class="btn btn-light" href="#relawan">Gabung jadi relawan <span data-icon="arrow"></span></a>
+          <a class="contact-hero__link" href="#lokasi"><span data-icon="pin"></span>Lihat informasi lokasi</a>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap contact-grid">
+        <aside class="contact-aside" id="lokasi">
+          <span class="eyebrow" style="color:#c5dc91">EcoPath Gunung Anyar</span>
+          <h2 style="font-size:32px;margin-top:14px">Sampai jumpa di pesisir.</h2>
+          <p>Gunakan informasi berikut sebagai panduan awal. Konfirmasikan akses, jam buka, dan kegiatan kepada pengelola kawasan sebelum berangkat.</p>
+          <div class="contact-item">
+            <span class="contact-item-icon" data-icon="pin"></span>
+            <div>
+              <strong>Lokasi kawasan</strong>
+              <span>Gunung Anyar Tambak, Kecamatan Gunung Anyar, Surabaya, Jawa Timur</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-icon" data-icon="clock"></span>
+            <div>
+              <strong>Jam kunjungan</strong>
+              <span>Jadwal dapat berubah. Cek informasi terbaru dari pengelola sebelum berkunjung.</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-icon" data-icon="mail"></span>
+            <div>
+              <strong>Kontak pengelola</strong>
+              <span>Belum tersedia pada demo ini — mohon tambahkan kanal resmi yang terverifikasi.</span>
+            </div>
+          </div>
+          <div class="social-links" aria-label="Media sosial">
+            <span aria-label="Instagram">ig</span>
+            <span aria-label="Facebook">f</span>
+            <span aria-label="YouTube">▶</span>
+          </div>
+          <div class="hours">Akun media sosial resmi belum ditambahkan. Informasi peta dan alamat merupakan titik perkiraan kawasan; pastikan rute dan titik masuk sebelum perjalanan.</div>
+          <iframe class="map-embed" title="Peta lokasi Gunung Anyar Surabaya" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=112.79%2C-7.36%2C112.85%2C-7.31&amp;layer=mapnik&amp;marker=-7.3385%2C112.8212"></iframe>
+        </aside>
+        <div>
+          <form class="form-card" data-local-form id="relawan">
+            <span class="eyebrow">Formulir relawan & dukungan</span>
+            <h2 style="font-size:30px;margin:12px 0 25px">Mulai dari satu langkah.</h2>
+            <div class="form-progress" data-form-progress>
+              <div class="form-progress-track" role="progressbar" aria-label="Progres formulir relawan" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0">
+                <span data-form-progress-fill></span>
+              </div>
+              <p data-form-progress-text aria-live="polite">0 dari 3 informasi wajib lengkap</p>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Nama lengkap</label>
+                <input id="name" name="name" autocomplete="name" required placeholder="Nama kamu">
+              </div>
+              <div class="field">
+                <label for="email">Alamat email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required placeholder="nama@email.com">
+              </div>
+              <div class="field">
+                <label for="interest">Saya tertarik untuk</label>
+                <select id="interest" name="interest" required>
+                  <option value="">Pilih kegiatan</option>
+                  <option>Relawan penanaman</option>
+                  <option>Dukungan bibit mangrove</option>
+                  <option>Edukasi dan kunjungan komunitas</option>
+                  <option>Lainnya</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="phone">Nomor WhatsApp (opsional)</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="08xx xxxx xxxx">
+              </div>
+              <div class="field full">
+                <label for="message">Pesan atau ketersediaan waktu</label>
+                <textarea id="message" name="message" placeholder="Ceritakan sedikit tentang minatmu..."></textarea>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Kirim minat relawan <span data-icon="arrow"></span></button>
+            <p class="fine-print" style="margin-top:12px">Demo front-end: data formulir tidak dikirim atau disimpan ke server.</p>
+            <div class="form-status" role="status" aria-live="polite"></div>
+          </form>
+          <form class="form-card" data-local-form style="margin-top:18px">
+            <span class="eyebrow">Kontak & saran</span>
+            <h2 style="font-size:25px;margin:12px 0 20px">Bagikan masukanmu.</h2>
+            <div class="form-progress" data-form-progress>
+              <div class="form-progress-track" role="progressbar" aria-label="Progres formulir pesan" aria-valuemin="0" aria-valuemax="2" aria-valuenow="0">
+                <span data-form-progress-fill></span>
+              </div>
+              <p data-form-progress-text aria-live="polite">0 dari 2 informasi wajib lengkap</p>
+            </div>
+            <div class="field">
+              <label for="feedback-email">Email</label>
+              <input id="feedback-email" type="email" required placeholder="nama@email.com">
+            </div>
+            <div class="field">
+              <label for="feedback">Saran atau pertanyaan</label>
+              <textarea id="feedback" required placeholder="Tulis pesanmu di sini..."></textarea>
+            </div>
+            <button class="btn btn-outline" type="submit">Kirim pesan <span data-icon="arrow"></span></button>
+            <div class="form-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="./index.html">
+            <span class="brand-mark" data-icon="leaf"></span>
+            <span class="brand-name">EcoPath<span>Gunung Anyar</span></span>
+          </a>
+          <p class="footer-description">Cerita tentang ekowisata dan konservasi mangrove di pesisir timur Surabaya. Kenali, kunjungi, jaga bersama.</p>
+        </div>
+        <div>
+          <h3>Jelajahi</h3>
+          <div class="footer-links">
+            <a href="./about.html">Tentang kawasan</a>
+            <a href="./gallery.html">Biodiversitas</a>
+            <a href="./gallery.html#tur">Tur virtual</a>
+          </div>
+        </div>
+        <div>
+          <h3>Terhubung</h3>
+          <div class="footer-links">
+            <a href="./contact.html">Info kunjungan</a>
+            <a href="./contact.html#relawan">Jadi relawan</a>
+            <span>Gunung Anyar, Surabaya Timur</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year></span> EcoPath Gunung Anyar · Konsep edukasi konservasi</span>
+        <span>Manusia WFC</span>
+      </div>
+    </div>
+  </footer>
+  <script src="./app.js"></script>
+</body>
+</html>
