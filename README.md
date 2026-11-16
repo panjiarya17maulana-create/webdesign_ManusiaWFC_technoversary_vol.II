@@ -61,4 +61,7 @@ Tidak diperlukan instalasi package atau proses build. Website menggunakan HTML, 
 ## Tim
 
 - **Nama tim:** Manusia WFC
-- **Anggota:** Panji Arya Maulana
+- **Anggota:**
+  - Panji Arya Maulana
+  - Ferdian
+  - Ahmad Ghilman
