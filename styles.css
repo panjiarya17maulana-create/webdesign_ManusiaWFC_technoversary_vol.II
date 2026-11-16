@@ -1598,8 +1598,7 @@ h3 {
   margin-top: 27px
 }
 
-.social-links a,
-.social-links span {
+.social-links a {
   width: 36px;
   height: 36px;
   display: grid;
@@ -1607,6 +1606,12 @@ h3 {
   border: 1px solid #557467;
   border-radius: 50%;
   font-size: 12px
+}
+
+.social-links img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain
 }
 
 .form-card {
