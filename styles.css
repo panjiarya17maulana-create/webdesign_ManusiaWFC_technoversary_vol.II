@@ -4787,8 +4787,9 @@ body.home-page .coastal-wave+.footer {
   grid-template-columns: repeat(2, minmax(0, 1fr))
 }
 
-/* ── SOUND WIDGET: bulat saat off, pill saat on ── */
+/* ── SOUND WIDGET: bulat default (52×52), melebar saat .is-expanded ── */
 .sound-widget {
+  --sound-bar-width: 380px;
   position: fixed;
   right: max(16px, env(safe-area-inset-right));
   bottom: max(16px, env(safe-area-inset-bottom));
@@ -4804,7 +4805,7 @@ body.home-page .coastal-wave+.footer {
   backdrop-filter: blur(10px);
   touch-action: none;
   user-select: none;
-  /* Collapsed = bulat sempurna 52x52 */
+  /* Default = bulat sempurna 52x52 */
   width: 52px;
   min-width: 52px;
   max-width: 52px;
@@ -4812,14 +4813,20 @@ body.home-page .coastal-wave+.footer {
   padding: 0;
   transition: width .45s cubic-bezier(.16, 1, .3, 1),
               max-width .45s cubic-bezier(.16, 1, .3, 1),
-              border-color .2s ease,
-              box-shadow .2s ease,
+              border-color .25s ease,
+              box-shadow .25s ease,
               transform .2s ease;
 }
 
 .sound-widget:hover {
   transform: translateY(-2px);
   border-color: #d9f16a;
+}
+
+/* Status saat audio menyala (baik saat bulat maupun melebar) */
+.sound-widget.is-playing {
+  border-color: #d9f16a;
+  box-shadow: 0 10px 28px rgba(8, 31, 26, .35), 0 0 0 2px rgba(217, 241, 106, .28);
 }
 
 .sound-widget.is-draggable { cursor: grab; }
@@ -4835,7 +4842,7 @@ body.home-page .coastal-wave+.footer {
 /* Handle drag disembunyikan karena dragging via full widget */
 .sound-drag-handle { display: none; }
 
-/* ── Tombol toggle: selalu lingkaran 52×52 ── */
+/* ── Tombol toggle utama: selalu lingkaran 52×52 ── */
 .sound-toggle {
   position: relative;
   flex-shrink: 0;
@@ -4887,7 +4894,8 @@ body.home-page .coastal-wave+.footer {
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   color: #e5eee7;
@@ -4902,8 +4910,8 @@ body.home-page .coastal-wave+.footer {
 }
 
 .sound-volume input {
-  width: 82px;
-  min-width: 54px;
+  width: 78px;
+  min-width: 48px;
   height: 20px;
   margin: 0;
   accent-color: #d9f16a;
@@ -4916,13 +4924,38 @@ body.home-page .coastal-wave+.footer {
 }
 
 .sound-volume-value {
-  min-width: 30px;
+  min-width: 28px;
   color: #d9f16a;
   text-align: right;
   font-size: 10px;
 }
 
-/* ── Equalizer bars ── */
+/* ── Tombol Tutup / Ciutkan (✕) ── */
+.sound-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .1);
+  color: #b5c9bd;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, background .2s ease, color .2s ease;
+}
+
+.sound-close:hover {
+  background: rgba(255, 255, 255, .22);
+  color: #fff;
+}
+
+/* ── Equalizer bars: beranimasi saat musik menyala ── */
 .sound-equalizer {
   display: flex;
   align-items: center;
@@ -4943,27 +4976,27 @@ body.home-page .coastal-wave+.footer {
   transition: transform .2s ease;
 }
 
+.sound-widget.is-playing .sound-equalizer i,
 .sound-toggle[aria-pressed=true] .sound-equalizer i {
   animation: sound-equalize .72s ease-in-out infinite alternate;
 }
 
+.sound-widget.is-playing .sound-equalizer i:nth-child(2),
 .sound-toggle[aria-pressed=true] .sound-equalizer i:nth-child(2) {
   animation-delay: -.36s;
 }
 
+.sound-widget.is-playing .sound-equalizer i:nth-child(3),
 .sound-toggle[aria-pressed=true] .sound-equalizer i:nth-child(3) {
   animation-delay: -.18s;
 }
 
-/* ── EXPANDED: Ketika ditekan menjadi panjang ── */
-.sound-widget:has([aria-pressed="true"]),
+/* ── EXPANDED: Ketika ditekan menjadi panjang (responsif per device) ── */
 .sound-widget.is-expanded {
-  width: 375px;
+  width: var(--sound-bar-width, 380px);
   max-width: calc(100vw - 28px);
 }
 
-.sound-widget:has([aria-pressed="true"]) [data-sound-label],
-.sound-widget:has([aria-pressed="true"]) .sound-label,
 .sound-widget.is-expanded [data-sound-label],
 .sound-widget.is-expanded .sound-label {
   max-width: 140px;
@@ -4972,11 +5005,15 @@ body.home-page .coastal-wave+.footer {
   pointer-events: auto;
 }
 
-.sound-widget:has([aria-pressed="true"]) .sound-volume,
 .sound-widget.is-expanded .sound-volume {
   max-width: 220px;
   opacity: 1;
-  padding: 0 14px 0 6px;
+  padding: 0 6px 0 6px;
+  pointer-events: auto;
+}
+
+.sound-widget.is-expanded .sound-close {
+  opacity: 1;
   pointer-events: auto;
 }
 
@@ -5034,33 +5071,12 @@ body.home-page .coastal-wave+.footer {
   }
 }
 
-/* ── Responsive: Sound widget di semua ukuran layar ── */
-@media(max-width:480px) {
-  .sound-widget:has([aria-pressed="true"]),
-  .sound-widget.is-expanded {
-    width: calc(100vw - 24px);
-    max-width: calc(100vw - 24px);
-  }
-
-  .sound-widget:has([aria-pressed="true"]) .sound-volume input,
-  .sound-widget.is-expanded .sound-volume input {
-    width: 54px;
-    min-width: 42px;
-  }
-
-  .sound-widget:has([aria-pressed="true"]) [data-sound-label],
-  .sound-widget.is-expanded [data-sound-label] {
-    font-size: 10px;
-  }
-
-  .sound-widget:has([aria-pressed="true"]) .sound-volume-value,
-  .sound-widget.is-expanded .sound-volume-value {
-    display: none;
-  }
-}
-
 /* ── Responsive Tablet (701px - 1024px) ── */
 @media(min-width:701px) and (max-width:1024px) {
+  .sound-widget {
+    --sound-bar-width: 350px;
+  }
+
   .wrap {
     width: calc(100% - 40px);
     max-width: 100%;
@@ -5102,6 +5118,10 @@ body.home-page .coastal-wave+.footer {
 
 /* ── Responsive Mobile Sedang (481px - 700px) ── */
 @media(min-width:481px) and (max-width:700px) {
+  .sound-widget {
+    --sound-bar-width: min(340px, calc(100vw - 32px));
+  }
+
   .wrap {
     width: calc(100% - 32px);
     max-width: 100%;
@@ -5120,6 +5140,33 @@ body.home-page .coastal-wave+.footer {
 
 /* ── Responsive Mobile Kecil (<480px) ── */
 @media(max-width:480px) {
+  .sound-widget {
+    --sound-bar-width: calc(100vw - 24px);
+  }
+
+  .sound-widget.is-expanded {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+  }
+
+  .sound-widget.is-expanded .sound-volume input {
+    width: 50px;
+    min-width: 38px;
+  }
+
+  .sound-widget.is-expanded [data-sound-label] {
+    font-size: 10px;
+  }
+
+  .sound-widget.is-expanded .sound-volume-value {
+    display: none;
+  }
+
+  .sound-close {
+    width: 22px;
+    height: 22px;
+    margin-right: 6px;
+  }
   body {
     font-size: 15px;
   }

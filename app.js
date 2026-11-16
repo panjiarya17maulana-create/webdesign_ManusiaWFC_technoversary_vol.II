@@ -456,6 +456,8 @@ const initAmbientSoundscape = () => {
   const status = document.querySelector('[data-sound-status]');
   const volumeInput = document.querySelector('[data-sound-volume]');
   const volumeOutput = document.querySelector('[data-sound-volume-output]');
+  const closeButton = widget ? widget.querySelector('[data-sound-close]') : null;
+
   if (!status || !volumeInput || !volumeOutput) {
     console.error('Kontrol suara alam tidak lengkap pada halaman ini.');
     return;
@@ -465,6 +467,55 @@ const initAmbientSoundscape = () => {
   let activeSoundscape = null;
   let volumeStorageWarning = '';
   let volume = 45;
+  let autoCollapseTimer = null;
+
+  const clearAutoCollapse = () => {
+    if (autoCollapseTimer) {
+      window.clearTimeout(autoCollapseTimer);
+      autoCollapseTimer = null;
+    }
+  };
+
+  const clampWidgetPosition = () => {
+    if (widget && widget.style.left) {
+      window.setTimeout(() => {
+        const rect = widget.getBoundingClientRect();
+        if (rect.right > window.innerWidth - 12) {
+          widget.style.left = `${Math.max(12, window.innerWidth - widget.offsetWidth - 12)}px`;
+        }
+      }, 50);
+    }
+  };
+
+  const collapseWidget = () => {
+    if (!widget) return;
+    clearAutoCollapse();
+    widget.classList.remove('is-expanded');
+    button.title = activeSoundscape
+      ? 'Suara Alam aktif · Klik untuk buka kontrol / matikan'
+      : 'Putar Musik Suara Alam';
+  };
+
+  const scheduleAutoCollapse = (delay = 5000) => {
+    clearAutoCollapse();
+    autoCollapseTimer = window.setTimeout(() => {
+      collapseWidget();
+    }, delay);
+  };
+
+  const expandWidget = () => {
+    if (!widget) return;
+    widget.classList.add('is-expanded');
+    button.title = 'Klik untuk matikan suara alam';
+    clampWidgetPosition();
+    scheduleAutoCollapse(5000);
+  };
+
+  closeButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    collapseWidget();
+  });
+
   try {
     const storedVolume = window.localStorage.getItem(volumeStorageKey);
     if (storedVolume !== null) {
@@ -478,6 +529,7 @@ const initAmbientSoundscape = () => {
   volumeInput.value = String(volume);
   volumeInput.setAttribute('aria-valuetext', `${volume}%`);
   volumeOutput.textContent = `${volume}%`;
+
   volumeInput.addEventListener('input', () => {
     volume = Number(volumeInput.value);
     volumeInput.setAttribute('aria-valuetext', `${volume}%`);
@@ -487,6 +539,7 @@ const initAmbientSoundscape = () => {
       activeSoundscape.master.gain.cancelScheduledValues(now);
       activeSoundscape.master.gain.setTargetAtTime(volume * 0.001, now, 0.12);
     }
+    scheduleAutoCollapse(5000);
     try {
       window.localStorage.setItem(volumeStorageKey, String(volume));
     } catch (error) {
@@ -496,20 +549,29 @@ const initAmbientSoundscape = () => {
     }
   });
 
+  volumeInput.addEventListener('pointerdown', () => clearAutoCollapse());
+  volumeInput.addEventListener('pointerup', () => scheduleAutoCollapse(5000));
+
+  widget?.addEventListener('mouseenter', () => {
+    if (widget.classList.contains('is-expanded')) {
+      clearAutoCollapse();
+    }
+  });
+
+  widget?.addEventListener('mouseleave', () => {
+    if (widget.classList.contains('is-expanded')) {
+      scheduleAutoCollapse(4000);
+    }
+  });
+
   const setControlState = (enabled, message = '') => {
     button.setAttribute('aria-pressed', String(enabled));
     button.setAttribute('aria-label', `${enabled ? 'Matikan' : 'Aktifkan'} suara alam`);
-    button.title = enabled ? 'Matikan Suara Alam' : 'Putar Musik Suara Alam';
+    button.title = enabled
+      ? (widget?.classList.contains('is-expanded') ? 'Klik untuk matikan suara alam' : 'Suara Alam aktif · Klik untuk kontrol/matikan')
+      : 'Putar Musik Suara Alam';
     if (widget) {
-      widget.classList.toggle('is-expanded', enabled);
-      if (widget.style.left) {
-        window.setTimeout(() => {
-          const rect = widget.getBoundingClientRect();
-          if (rect.right > window.innerWidth - 12) {
-            widget.style.left = `${Math.max(12, window.innerWidth - widget.offsetWidth - 12)}px`;
-          }
-        }, 60);
-      }
+      widget.classList.toggle('is-playing', enabled);
     }
     if (label) {
       label.textContent = `Suara Alam: ${enabled ? 'On' : 'Off'}`;
@@ -594,14 +656,23 @@ const initAmbientSoundscape = () => {
   };
 
   button.addEventListener('click', async () => {
+    // 1. Jika audio sedang aktif dan widget dalam posisi bulat: buka panel lebar selama 5 detik
+    if (activeSoundscape && widget && !widget.classList.contains('is-expanded')) {
+      expandWidget();
+      return;
+    }
+
+    // 2. Jika audio sedang aktif dan widget dalam posisi terbuka (lebar): matikan audio dan tutup
     if (activeSoundscape) {
       const soundscape = activeSoundscape;
       activeSoundscape = null;
       fadeOutSoundscape(soundscape);
       setControlState(false, 'Suara alam dimatikan.');
+      collapseWidget();
       return;
     }
 
+    // 3. Jika audio sedang mati: aktifkan audio, buka lebar, dan otomatis ciutkan ke bulat setelah 5 detik
     const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextConstructor) {
       setControlState(false, 'Browser ini belum mendukung Web Audio untuk suara alam.');
@@ -633,6 +704,7 @@ const initAmbientSoundscape = () => {
       activeSoundscape = soundscape;
       master.gain.setTargetAtTime(volume * 0.001, context.currentTime, 0.65);
       setControlState(true, 'Suara alam aktif.');
+      expandWidget(); // Buka melebar selama 5 detik, lalu otomatis kembali bulat dalam keadaan tetap nyala
       scheduleBirdCall(soundscape);
     } catch (error) {
       if (context && context.state !== 'closed') {
@@ -640,6 +712,7 @@ const initAmbientSoundscape = () => {
       }
       console.error('Gagal mengaktifkan suara alam:', error);
       setControlState(false, 'Suara alam tidak dapat diaktifkan. Coba lagi atau periksa izin audio browser.');
+      collapseWidget();
     } finally {
       button.disabled = false;
     }
