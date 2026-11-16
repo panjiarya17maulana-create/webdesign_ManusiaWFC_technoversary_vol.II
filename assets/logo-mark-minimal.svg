@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+  <!-- Minimalist Mangrove Mark: Leaf crown + Stilt Roots in crisp vector strokes -->
+  <!-- Leaf Crown -->
+  <path d="M50 14 C36 28 42 46 50 50 C58 46 64 28 50 14 Z" fill="currentColor" stroke="none" />
+  <path d="M50 20 L50 48" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.8" />
+  <!-- Left accent petal -->
+  <path d="M48 35 C38 31 32 40 44 45 C47 46 48 44 48 35 Z" fill="currentColor" opacity="0.85" stroke="none" />
+  <!-- Roots -->
+  <path d="M50 48 Q 42 58, 33 74 Q 30 79, 24 82" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" fill="none" />
+  <path d="M50 48 Q 58 58, 67 74 Q 70 79, 76 82" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" fill="none" />
+  <path d="M48 54 Q 43 65, 41 78" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" fill="none" />
+  <path d="M52 54 Q 57 65, 59 78" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" fill="none" />
+  <path d="M50 50 L50 75" stroke="currentColor" stroke-width="4" stroke-linecap="round" fill="none" />
+  <!-- Water line -->
+  <path d="M28 85 Q 50 82, 72 85" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.4" />
+</svg>

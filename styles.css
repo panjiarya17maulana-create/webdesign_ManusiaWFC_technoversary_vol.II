@@ -120,6 +120,12 @@ select {
   height: 25px
 }
 
+.brand-mark img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain
+}
+
 .brand-name {
   font-family: var(--font-display);
   font-size: 19px;
