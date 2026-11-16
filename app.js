@@ -379,7 +379,221 @@ if (tourViewer && window.pannellum) {
   });
 }
 
+const initHotspotPins = () => {
+  const pins = Array.from(document.querySelectorAll('[data-hotspot-pin]'));
+  if (!pins.length) return;
+
+  const closePins = (except = null) => {
+    pins.forEach((pin) => {
+      if (pin === except) return;
+      pin.setAttribute('aria-expanded', 'false');
+      document.getElementById(pin.getAttribute('aria-describedby'))?.classList.remove('is-open');
+    });
+  };
+
+  pins.forEach((pin) => {
+    pin.addEventListener('click', () => {
+      const open = pin.getAttribute('aria-expanded') !== 'true';
+      closePins(pin);
+      pin.setAttribute('aria-expanded', String(open));
+      document.getElementById(pin.getAttribute('aria-describedby'))?.classList.toggle('is-open', open);
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('[data-hotspot-pin], [data-hotspot-card]')) return;
+    closePins();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const openPin = pins.find((pin) => pin.getAttribute('aria-expanded') === 'true');
+    if (!openPin) return;
+    closePins();
+    openPin.focus();
+  });
+};
+
+const initPledgeCard = () => {
+  const builder = document.querySelector('[data-pledge-builder]');
+  if (!builder) return;
+
+  const nameInput = builder.querySelector('#pledge-name');
+  const nameOutput = builder.querySelector('[data-pledge-name]');
+  const countOutput = builder.querySelector('[data-pledge-count-output]');
+  const carbonOutput = builder.querySelector('[data-pledge-carbon]');
+  const amountButtons = Array.from(builder.querySelectorAll('[data-pledge-count]'));
+  const formatter = new Intl.NumberFormat('id-ID');
+  let amount = 3;
+
+  const updatePreview = () => {
+    nameOutput.textContent = nameInput.value.trim() || 'Penjaga Pesisir';
+    countOutput.textContent = `${amount} bibit mangrove`;
+    carbonOutput.textContent = `${formatter.format(amount * 10)} kg CO₂/tahun`;
+  };
+
+  nameInput.addEventListener('input', updatePreview);
+  amountButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selectedAmount = Number(button.dataset.pledgeCount);
+      if (![1, 3, 5].includes(selectedAmount)) {
+        console.error('Jumlah bibit komitmen tidak valid:', button.dataset.pledgeCount);
+        return;
+      }
+      amount = selectedAmount;
+      amountButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      updatePreview();
+    });
+  });
+  updatePreview();
+};
+
+const initAmbientSoundscape = () => {
+  const button = document.querySelector('[data-sound-toggle]');
+  if (!button) return;
+
+  const label = button.querySelector('[data-sound-label]');
+  const status = document.querySelector('[data-sound-status]');
+  let activeSoundscape = null;
+  const setControlState = (enabled, message = '') => {
+    button.setAttribute('aria-pressed', String(enabled));
+    button.setAttribute('aria-label', `${enabled ? 'Matikan' : 'Aktifkan'} suara alam`);
+    label.textContent = `Suara Alam: ${enabled ? 'On' : 'Off'}`;
+    status.textContent = message;
+  };
+
+  const createBrownNoise = (context) => {
+    const buffer = context.createBuffer(1, context.sampleRate * 4, context.sampleRate);
+    const samples = buffer.getChannelData(0);
+    let brown = 0;
+    for (let index = 0; index < samples.length; index += 1) {
+      brown = (brown + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+      samples[index] = brown * 3.5;
+    }
+    return buffer;
+  };
+
+  const connectNoiseLayer = (context, buffer, master, baseFrequency, modulationDepth, modulationRate, level) => {
+    const source = context.createBufferSource();
+    const filter = context.createBiquadFilter();
+    const layerGain = context.createGain();
+    const lfo = context.createOscillator();
+    const lfoGain = context.createGain();
+
+    source.buffer = buffer;
+    source.loop = true;
+    filter.type = 'lowpass';
+    filter.frequency.value = baseFrequency;
+    layerGain.gain.value = level;
+    lfo.frequency.value = modulationRate;
+    lfoGain.gain.value = modulationDepth;
+
+    source.connect(filter);
+    filter.connect(layerGain);
+    layerGain.connect(master);
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+    source.start();
+    lfo.start();
+    return { nodes: [source, filter, layerGain, lfo, lfoGain], sources: [source, lfo] };
+  };
+
+  const scheduleBirdCall = (soundscape) => {
+    if (!soundscape.enabled) return;
+    soundscape.birdTimer = window.setTimeout(() => {
+      if (!soundscape.enabled) return;
+      const { context, master } = soundscape;
+      const start = context.currentTime;
+      const bird = context.createOscillator();
+      const envelope = context.createGain();
+      bird.type = 'sine';
+      bird.frequency.setValueAtTime(1700, start);
+      bird.frequency.exponentialRampToValueAtTime(2500, start + 0.12);
+      bird.frequency.exponentialRampToValueAtTime(1850, start + 0.36);
+      envelope.gain.setValueAtTime(0.0001, start);
+      envelope.gain.exponentialRampToValueAtTime(0.06, start + 0.035);
+      envelope.gain.exponentialRampToValueAtTime(0.0001, start + 0.38);
+      bird.connect(envelope);
+      envelope.connect(master);
+      bird.addEventListener('ended', () => {
+        bird.disconnect();
+        envelope.disconnect();
+      }, { once: true });
+      bird.start(start);
+      bird.stop(start + 0.4);
+      scheduleBirdCall(soundscape);
+    }, 8500 + Math.random() * 7500);
+  };
+
+  const fadeOutSoundscape = (soundscape) => {
+    soundscape.enabled = false;
+    window.clearTimeout(soundscape.birdTimer);
+    const now = soundscape.context.currentTime;
+    soundscape.master.gain.cancelScheduledValues(now);
+    soundscape.master.gain.setTargetAtTime(0.0001, now, 0.22);
+    window.setTimeout(() => {
+      soundscape.sources.forEach((source) => source.stop());
+      soundscape.nodes.forEach((node) => node.disconnect());
+      soundscape.context.close().catch((error) => console.error('Gagal menutup audio suara alam:', error));
+    }, 1100);
+  };
+
+  button.addEventListener('click', async () => {
+    if (activeSoundscape) {
+      const soundscape = activeSoundscape;
+      activeSoundscape = null;
+      fadeOutSoundscape(soundscape);
+      setControlState(false, 'Suara alam dimatikan.');
+      return;
+    }
+
+    const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextConstructor) {
+      setControlState(false, 'Browser ini belum mendukung Web Audio untuk suara alam.');
+      return;
+    }
+
+    button.disabled = true;
+    let context;
+    try {
+      context = new AudioContextConstructor();
+      await context.resume();
+      const master = context.createGain();
+      const now = context.currentTime;
+      master.gain.setValueAtTime(0.0001, now);
+      master.connect(context.destination);
+      const buffer = createBrownNoise(context);
+      const layers = [
+        connectNoiseLayer(context, buffer, master, 480, 170, 0.065, 0.58),
+        connectNoiseLayer(context, buffer, master, 245, 90, 0.035, 0.34)
+      ];
+      const soundscape = {
+        context,
+        master,
+        nodes: [master, ...layers.flatMap((layer) => layer.nodes)],
+        sources: layers.flatMap((layer) => layer.sources),
+        enabled: true,
+        birdTimer: 0
+      };
+      activeSoundscape = soundscape;
+      master.gain.setTargetAtTime(0.045, context.currentTime, 0.65);
+      setControlState(true, 'Suara alam aktif.');
+      scheduleBirdCall(soundscape);
+    } catch (error) {
+      if (context && context.state !== 'closed') {
+        context.close().catch((closeError) => console.error('Gagal menutup audio setelah aktivasi gagal:', closeError));
+      }
+      console.error('Gagal mengaktifkan suara alam:', error);
+      setControlState(false, 'Suara alam tidak dapat diaktifkan. Coba lagi atau periksa izin audio browser.');
+    } finally {
+      button.disabled = false;
+    }
+  });
+};
+
 const initUserDrivenMotion = () => {
+  initAmbientSoundscape();
+  initHotspotPins();
+  initPledgeCard();
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finePointer = window.matchMedia('(pointer: fine)').matches;
   const desktopMouse = finePointer && window.innerWidth > 768 && !reducedMotion;

@@ -133,7 +133,15 @@
           </div>
           <div class="habitat-panels">
             <article class="habitat-panel" id="panel-akar" role="tabpanel" aria-labelledby="tab-akar" tabindex="0" data-habitat-panel="akar">
-              <img class="habitat-visual" src="./bakau-minyak.jpg" alt="Akar bakau yang menopang habitat pesisir">
+              <div class="hotspot-stage">
+                <img class="habitat-visual" src="./bakau-minyak.jpg" alt="Akar bakau yang menopang habitat pesisir">
+                <button class="hotspot-pin hotspot-pin--canopy" type="button" data-hotspot-pin="canopy" aria-label="Tajuk dan Kanopi" aria-describedby="hotspot-canopy" aria-expanded="false"><span aria-hidden="true">01</span></button>
+                <div class="hotspot-card hotspot-card--canopy" id="hotspot-canopy" data-hotspot-card="canopy" role="tooltip"><strong>Tajuk &amp; Kanopi</strong><span>Menyerap karbon biru dan menjadi tempat bertengger burung pesisir.</span></div>
+                <button class="hotspot-pin hotspot-pin--breathing" type="button" data-hotspot-pin="breathing" aria-label="Batang dan Akar Napas" aria-describedby="hotspot-breathing" aria-expanded="false"><span aria-hidden="true">02</span></button>
+                <div class="hotspot-card hotspot-card--breathing" id="hotspot-breathing" data-hotspot-card="breathing" role="tooltip"><strong>Batang &amp; Akar Napas</strong><span>Membantu pertukaran udara pada kondisi lumpur pasang surut.</span></div>
+                <button class="hotspot-pin hotspot-pin--support" type="button" data-hotspot-pin="support" aria-label="Akar Tunjang" aria-describedby="hotspot-support" aria-expanded="false"><span aria-hidden="true">03</span></button>
+                <div class="hotspot-card hotspot-card--support" id="hotspot-support" data-hotspot-card="support" role="tooltip"><strong>Akar Tunjang</strong><span>Meredam energi ombak abrasi dan melindungi biota kecil.</span></div>
+              </div>
               <div>
                 <span class="habitat-label">PENJAGA GARIS PANTAI</span>
                 <h3>Akar yang merawat tepian.</h3>
@@ -325,17 +333,43 @@
             <p>Dukung upaya pembibitan dan restorasi melalui aksi yang bertanggung jawab. Setiap kontribusi menumbuhkan kepedulian.</p>
             <p class="adoption-note">Pilih langkah yang sesuai dengan waktumu. Informasi kegiatan dapat dikonfirmasi langsung kepada pengelola.</p>
           </div>
-          <div class="adoption-options">
-            <a class="adoption-option" href="./contact.html#relawan">
-              <span>01 · IKUT BERGERAK</span>
-              <strong>Jadi relawan</strong>
-              <span class="adoption-arrow" data-icon="arrow"></span>
-            </a>
-            <a class="adoption-option" href="./about.html">
-              <span>02 · MULAI BELAJAR</span>
-              <strong>Pahami konservasi</strong>
-              <span class="adoption-arrow" data-icon="arrow"></span>
-            </a>
+          <div class="adoption-right">
+            <div class="adoption-builder" data-pledge-builder>
+              <div class="pledge-controls">
+                <label for="pledge-name">Nama penjaga pesisir</label>
+                <input id="pledge-name" type="text" maxlength="32" autocomplete="name" placeholder="Ketik namamu...">
+                <fieldset class="pledge-amount">
+                  <legend>Pilih jumlah bibit</legend>
+                  <div class="pledge-amount-options">
+                    <button type="button" data-pledge-count="1" aria-pressed="false">1 bibit</button>
+                    <button type="button" data-pledge-count="3" aria-pressed="true">3 bibit</button>
+                    <button type="button" data-pledge-count="5" aria-pressed="false">5 bibit</button>
+                  </div>
+                </fieldset>
+              </div>
+              <article class="pledge-card" aria-label="Pratinjau kartu komitmen">
+                <span class="pledge-card-label">KOMITMEN PENJAGA PESISIR</span>
+                <h3>Satu aksi, akar harapan.</h3>
+                <p>Saya, <strong data-pledge-name>Penjaga Pesisir</strong>, memilih merawat</p>
+                <strong class="pledge-card-count" data-pledge-count-output>3 bibit mangrove</strong>
+                <div class="pledge-carbon">
+                  <strong data-pledge-carbon>30 kg CO₂/tahun</strong>
+                  <span>estimasi serapan karbon*</span>
+                </div>
+                <small>*Perkiraan edukatif, bukan pengukuran resmi.</small>
+              </article>
+            </div>
+            <div class="adoption-options">
+              <a class="adoption-option" href="./contact.html#relawan">
+                <span>01 · IKUT BERGERAK</span>
+                <strong>Jadi relawan</strong>
+                <span class="adoption-arrow" data-icon="arrow"></span>
+              </a>
+              <a class="adoption-option" href="./about.html">
+                <span>02 · MULAI BELAJAR</span>
+                <strong>Pahami konservasi</strong>
+                <span class="adoption-arrow" data-icon="arrow"></span>
+              </a>
             </div>
           </div>
         </div>
@@ -381,6 +415,11 @@
     </div>
   </footer>
   <div class="toast" role="status"></div>
+  <button class="sound-toggle" type="button" aria-pressed="false" aria-label="Aktifkan suara alam" data-sound-toggle>
+    <span class="sound-equalizer" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span data-sound-label>Suara Alam: Off</span>
+  </button>
+  <span class="sr-only" role="status" aria-live="polite" data-sound-status></span>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script src="./app.js"></script>
