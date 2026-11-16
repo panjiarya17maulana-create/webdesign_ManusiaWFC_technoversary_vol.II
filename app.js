@@ -453,53 +453,12 @@ const initAmbientSoundscape = () => {
 
   const label = button.querySelector('[data-sound-label]');
   const status = document.querySelector('[data-sound-status]');
-  const volumeInput = document.querySelector('[data-sound-volume]');
-  const volumeOutput = document.querySelector('[data-sound-volume-output]');
-  if (!label || !status || !volumeInput || !volumeOutput) {
-    console.error('Kontrol suara alam tidak lengkap pada halaman ini.');
-    return;
-  }
-
-  const volumeStorageKey = 'ecopath-sound-volume';
   let activeSoundscape = null;
-  let volumeStorageWarning = '';
-  let volume = 45;
-  try {
-    const storedVolume = window.localStorage.getItem(volumeStorageKey);
-    if (storedVolume !== null) {
-      const parsedVolume = Number(storedVolume);
-      if (Number.isFinite(parsedVolume) && parsedVolume >= 0 && parsedVolume <= 100) volume = parsedVolume;
-    }
-  } catch (error) {
-    volumeStorageWarning = 'Pengaturan volume tidak dapat dibaca dari penyimpanan browser.';
-    console.error('Gagal membaca pengaturan volume suara alam:', error);
-  }
-  volumeInput.value = String(volume);
-  volumeInput.setAttribute('aria-valuetext', `${volume}%`);
-  volumeOutput.textContent = `${volume}%`;
-  volumeInput.addEventListener('input', () => {
-    volume = Number(volumeInput.value);
-    volumeInput.setAttribute('aria-valuetext', `${volume}%`);
-    volumeOutput.textContent = `${volume}%`;
-    if (activeSoundscape) {
-      const now = activeSoundscape.context.currentTime;
-      activeSoundscape.master.gain.cancelScheduledValues(now);
-      activeSoundscape.master.gain.setTargetAtTime(volume * 0.001, now, 0.12);
-    }
-    try {
-      window.localStorage.setItem(volumeStorageKey, String(volume));
-    } catch (error) {
-      volumeStorageWarning = 'Volume berlaku di halaman ini, tetapi tidak dapat disimpan untuk halaman lain.';
-      status.textContent = volumeStorageWarning;
-      console.error('Gagal menyimpan pengaturan volume suara alam:', error);
-    }
-  });
-
   const setControlState = (enabled, message = '') => {
     button.setAttribute('aria-pressed', String(enabled));
     button.setAttribute('aria-label', `${enabled ? 'Matikan' : 'Aktifkan'} suara alam`);
     label.textContent = `Suara Alam: ${enabled ? 'On' : 'Off'}`;
-    status.textContent = message || volumeStorageWarning;
+    status.textContent = message;
   };
 
   const createBrownNoise = (context) => {
@@ -616,7 +575,7 @@ const initAmbientSoundscape = () => {
         birdTimer: 0
       };
       activeSoundscape = soundscape;
-      master.gain.setTargetAtTime(volume * 0.001, context.currentTime, 0.65);
+      master.gain.setTargetAtTime(0.045, context.currentTime, 0.65);
       setControlState(true, 'Suara alam aktif.');
       scheduleBirdCall(soundscape);
     } catch (error) {
@@ -629,142 +588,6 @@ const initAmbientSoundscape = () => {
       button.disabled = false;
     }
   });
-
-  const widget = button.closest('.sound-widget');
-  if (widget) {
-    widget.classList.add('is-draggable');
-
-    if (!widget.querySelector('.sound-drag-handle')) {
-      const handle = document.createElement('span');
-      handle.className = 'sound-drag-handle';
-      handle.setAttribute('aria-hidden', 'true');
-      handle.title = 'Tahan & geser untuk memindahkan posisi widget';
-      handle.innerHTML = '<svg width="7" height="13" viewBox="0 0 7 13" fill="currentColor"><circle cx="2" cy="2" r="1.2"/><circle cx="5" cy="2" r="1.2"/><circle cx="2" cy="6.5" r="1.2"/><circle cx="5" cy="6.5" r="1.2"/><circle cx="2" cy="11" r="1.2"/><circle cx="5" cy="11" r="1.2"/></svg>';
-      widget.prepend(handle);
-    }
-
-    const posStorageKey = 'ecopath-sound-widget-pos';
-    let isDragging = false;
-    let hasMoved = false;
-    let startX = 0;
-    let startY = 0;
-    let origLeft = 0;
-    let origTop = 0;
-
-    const clamp = (left, top) => {
-      const header = document.querySelector('.topbar') || document.querySelector('header');
-      const headerBottom = header ? header.getBoundingClientRect().bottom : 82;
-      const minTop = Math.max(10, headerBottom + 12);
-      const maxTop = Math.max(minTop, window.innerHeight - widget.offsetHeight - 12);
-      const minLeft = 12;
-      const maxLeft = Math.max(minLeft, window.innerWidth - widget.offsetWidth - 12);
-
-      return {
-        left: Math.min(Math.max(left, minLeft), maxLeft),
-        top: Math.min(Math.max(top, minTop), maxTop)
-      };
-    };
-
-    const applyPosition = (left, top) => {
-      const clamped = clamp(left, top);
-      widget.style.left = `${clamped.left}px`;
-      widget.style.top = `${clamped.top}px`;
-      widget.style.right = 'auto';
-      widget.style.bottom = 'auto';
-    };
-
-    try {
-      const saved = window.localStorage.getItem(posStorageKey);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (typeof parsed.left === 'number' && typeof parsed.top === 'number') {
-          let l = parsed.left;
-          let t = parsed.top;
-          if (typeof parsed.ratioX === 'number' && typeof parsed.ratioY === 'number') {
-            l = parsed.ratioX * window.innerWidth;
-            t = parsed.ratioY * window.innerHeight;
-          }
-          applyPosition(l, t);
-        }
-      }
-    } catch (_) {}
-
-    widget.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('input[type="range"]') || e.target.closest('[data-sound-toggle]') || e.button !== 0) return;
-
-      isDragging = true;
-      hasMoved = false;
-      startX = e.clientX;
-      startY = e.clientY;
-
-      const rect = widget.getBoundingClientRect();
-      origLeft = rect.left;
-      origTop = rect.top;
-
-      try {
-        widget.setPointerCapture(e.pointerId);
-      } catch (_) {}
-    });
-
-    widget.addEventListener('pointermove', (e) => {
-      if (!isDragging) return;
-
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-
-      if (!hasMoved && Math.hypot(dx, dy) < 4) return;
-
-      if (!hasMoved) {
-        hasMoved = true;
-        widget.classList.add('is-dragging');
-      }
-
-      applyPosition(origLeft + dx, origTop + dy);
-    });
-
-    const endDrag = (e) => {
-      if (!isDragging) return;
-      isDragging = false;
-
-      try {
-        widget.releasePointerCapture(e.pointerId);
-      } catch (_) {}
-
-      widget.classList.remove('is-dragging');
-
-      if (hasMoved) {
-        const preventClick = (ev) => {
-          ev.stopImmediatePropagation();
-          ev.preventDefault();
-          widget.removeEventListener('click', preventClick, true);
-        };
-        widget.addEventListener('click', preventClick, true);
-        window.setTimeout(() => {
-          widget.removeEventListener('click', preventClick, true);
-        }, 120);
-
-        try {
-          const rect = widget.getBoundingClientRect();
-          window.localStorage.setItem(posStorageKey, JSON.stringify({
-            left: rect.left,
-            top: rect.top,
-            ratioX: rect.left / window.innerWidth,
-            ratioY: rect.top / window.innerHeight
-          }));
-        } catch (_) {}
-      }
-    };
-
-    widget.addEventListener('pointerup', endDrag);
-    widget.addEventListener('pointercancel', endDrag);
-
-    window.addEventListener('resize', () => {
-      if (widget.style.left && widget.style.top) {
-        const rect = widget.getBoundingClientRect();
-        applyPosition(rect.left, rect.top);
-      }
-    });
-  }
 };
 
 const initUserDrivenMotion = () => {
