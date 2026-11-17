@@ -1218,6 +1218,7 @@ h3 {
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  align-items: start;
   gap: 16px
 }
 
@@ -3425,6 +3426,11 @@ body.home-page .stat span {
   overflow: hidden
 }
 
+.benefit-card[open] {
+  border-color: #b8d2bb;
+  box-shadow: 0 16px 36px rgba(21, 62, 49, .1)
+}
+
 .benefit-summary,
 .guideline-summary,
 .article-detail-summary {
@@ -3477,6 +3483,27 @@ body.home-page .stat span {
   font-size: 13px
 }
 
+.benefit-card[open]>p,
+.benefit-card[open]>.benefit-extra {
+  animation: benefit-content-in .38s cubic-bezier(.2, .75, .25, 1) both
+}
+
+.benefit-card[open]>.benefit-extra {
+  animation-delay: .06s
+}
+
+@keyframes benefit-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
 .benefit-extra,
 .guideline-tip {
   display: block;
@@ -3487,6 +3514,15 @@ body.home-page .stat span {
   color: #52675a;
   font-size: 11px;
   line-height: 1.55
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .benefit-card,
+  .benefit-card>p,
+  .benefit-card>.benefit-extra {
+    animation: none;
+    transition: none
+  }
 }
 
 .guideline-summary {
