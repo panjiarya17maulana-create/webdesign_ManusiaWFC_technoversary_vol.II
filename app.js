@@ -563,6 +563,7 @@ const initAmbientSoundscape = () => {
   let autoCollapseTimer = null;
   let isAudioTransitioning = false;
   let dragCompletedRecently = false;
+  let isVolumeAdjusting = false;
 
   const clearAutoCollapse = () => {
     if (autoCollapseTimer) {
@@ -594,6 +595,8 @@ const initAmbientSoundscape = () => {
   const scheduleAutoCollapse = (delay = 5000) => {
     clearAutoCollapse();
     autoCollapseTimer = window.setTimeout(() => {
+      autoCollapseTimer = null;
+      if (isVolumeAdjusting || document.activeElement === volumeInput) return;
       collapseWidget();
     }, delay);
   };
@@ -644,8 +647,21 @@ const initAmbientSoundscape = () => {
     }
   });
 
-  volumeInput.addEventListener('pointerdown', () => clearAutoCollapse());
-  volumeInput.addEventListener('pointerup', () => scheduleAutoCollapse(5000));
+  volumeInput.addEventListener('pointerdown', () => {
+    isVolumeAdjusting = true;
+    clearAutoCollapse();
+  });
+  const finishVolumeAdjustment = () => {
+    isVolumeAdjusting = false;
+    scheduleAutoCollapse(5000);
+  };
+  volumeInput.addEventListener('pointerup', finishVolumeAdjustment);
+  volumeInput.addEventListener('pointercancel', finishVolumeAdjustment);
+  volumeInput.addEventListener('focus', clearAutoCollapse);
+  volumeInput.addEventListener('blur', () => {
+    if (!isVolumeAdjusting) scheduleAutoCollapse(5000);
+  });
+  volumeInput.addEventListener('click', (event) => event.stopPropagation());
 
   widget?.addEventListener('mouseenter', () => {
     if (widget.classList.contains('is-expanded')) {
@@ -884,7 +900,7 @@ const initAmbientSoundscape = () => {
     } catch (_) {}
 
     widget.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('input[type="range"]') || e.target.closest('[data-sound-close]') || e.button !== 0) return;
+      if (!e.target.closest('[data-sound-toggle]') || e.button !== 0) return;
 
       isDragging = true;
       hasMoved = false;
