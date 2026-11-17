@@ -371,24 +371,105 @@ if (mapElement && window.L) {
 }
 
 const tourViewer = document.querySelector('#tour-viewer');
-if (tourViewer && window.pannellum) {
-  const viewer = pannellum.viewer('tour-viewer', {
-    default: {
-      firstScene: 'boardwalk',
-      sceneFadeDuration: 700
+if (tourViewer) {
+  const tourPhoto = tourViewer.querySelector('.tour-photo');
+  const tourCaption = tourViewer.querySelector('.tour-photo-caption');
+  const tourButtons = Array.from(document.querySelectorAll('[data-tour]'));
+  const tourScenes = {
+    boardwalk: {
+      src: './assets/mangrovedua.jpg',
+      alt: 'Jalur boardwalk di antara pepohonan mangrove',
+      label: 'Jalur boardwalk'
     },
-    scenes: {
-      boardwalk: { type: 'equirectangular', panorama: './assets/boardwalk-panorama.png', autoLoad: true, hfov: 105, pitch: 0, yaw: 0 },
-      lookout: { type: 'equirectangular', panorama: './assets/lookout-panorama.png', autoLoad: true, hfov: 105, pitch: 0, yaw: 0 }
+    lookout: {
+      src: './assets/menara.jpeg',
+      alt: 'Pemandangan menara di tengah kawasan mangrove',
+      label: 'Pemandangan menara'
     }
+  };
+  const zoomInButton = tourViewer.querySelector('[data-photo-zoom-in]');
+  const zoomOutButton = tourViewer.querySelector('[data-photo-zoom-out]');
+  const resetButton = tourViewer.querySelector('[data-photo-reset]');
+  const zoomStatus = tourViewer.querySelector('[data-photo-zoom-status]');
+  const minScale = 1;
+  const maxScale = 3;
+  let scale = minScale;
+  let panX = 0;
+  let panY = 0;
+  let dragState = null;
+
+  const updatePhotoView = () => {
+    const bounds = tourViewer.getBoundingClientRect();
+    const maxPanX = bounds.width * (scale - 1) / 2;
+    const maxPanY = bounds.height * (scale - 1) / 2;
+    panX = Math.max(-maxPanX, Math.min(maxPanX, panX));
+    panY = Math.max(-maxPanY, Math.min(maxPanY, panY));
+    tourPhoto.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${scale})`;
+    tourViewer.classList.toggle('is-zoomed', scale > minScale);
+    zoomInButton.disabled = scale >= maxScale;
+    zoomOutButton.disabled = scale <= minScale;
+    zoomStatus.textContent = `Pembesaran ${Math.round(scale * 100)}%`;
+  };
+
+  const resetPhotoView = () => {
+    scale = minScale;
+    panX = 0;
+    panY = 0;
+    updatePhotoView();
+  };
+
+  zoomInButton.addEventListener('click', () => {
+    scale = Math.min(maxScale, scale + 0.5);
+    updatePhotoView();
   });
-  document.querySelectorAll('[data-tour]').forEach((button) => {
+  zoomOutButton.addEventListener('click', () => {
+    scale = Math.max(minScale, scale - 0.5);
+    updatePhotoView();
+  });
+  resetButton.addEventListener('click', resetPhotoView);
+
+  tourPhoto.addEventListener('pointerdown', (event) => {
+    if (scale <= minScale) return;
+    event.preventDefault();
+    dragState = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, panX, panY };
+    tourPhoto.setPointerCapture(event.pointerId);
+    tourViewer.classList.add('is-dragging');
+  });
+  tourPhoto.addEventListener('pointermove', (event) => {
+    if (!dragState || dragState.pointerId !== event.pointerId) return;
+    panX = dragState.panX + event.clientX - dragState.x;
+    panY = dragState.panY + event.clientY - dragState.y;
+    updatePhotoView();
+  });
+  const stopPhotoDrag = (event) => {
+    if (!dragState || dragState.pointerId !== event.pointerId) return;
+    dragState = null;
+    tourViewer.classList.remove('is-dragging');
+  };
+  tourPhoto.addEventListener('pointerup', stopPhotoDrag);
+  tourPhoto.addEventListener('pointercancel', stopPhotoDrag);
+
+  tourButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      document.querySelectorAll('[data-tour]').forEach((item) => item.classList.remove('active'));
-      button.classList.add('active');
-      viewer.loadScene(button.dataset.tour);
+      const scene = tourScenes[button.dataset.tour];
+      if (!scene) return;
+
+      tourButtons.forEach((item) => {
+        const selected = item === button;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', String(selected));
+      });
+
+      resetPhotoView();
+      tourPhoto.classList.remove('is-visible');
+      tourPhoto.src = scene.src;
+      tourPhoto.alt = scene.alt;
+      tourCaption.textContent = scene.label;
+      window.requestAnimationFrame(() => tourPhoto.classList.add('is-visible'));
     });
   });
+  window.addEventListener('resize', updatePhotoView);
+  updatePhotoView();
 }
 
 const initHotspotPins = () => {

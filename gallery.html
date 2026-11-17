@@ -6,12 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#173e35">
   <meta name="description"
-    content="Jelajahi flora dan fauna Mangrove Gunung Anyar melalui katalog biodiversitas dan virtual tour panorama.">
+    content="Jelajahi flora dan fauna Mangrove Gunung Anyar melalui katalog biodiversitas dan galeri foto kawasan.">
   <title>Jelajah & Biodiversitas — EcoPath Gunung Anyar</title>
   <link rel="icon" href="./assets/logo-ecopath.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 </head>
 
 <body>
@@ -48,10 +47,10 @@
         <span class="eyebrow">Jelajah kehidupan pesisir</span>
         <h1>Setiap akar menyimpan<br>cerita kehidupan.</h1>
         <p class="lead">Kenali beberapa spesies yang dapat dijumpai di ekosistem mangrove Surabaya, lalu rasakan suasana
-          hutan dari tur panorama.</p>
+          kawasan lewat galeri foto.</p>
         <div class="cinematic-hero__actions">
           <a class="btn btn-light" href="#biodiversitas">Jelajahi spesies </a>
-          <a class="cinematic-hero__link" href="#tur">Masuk tur panorama</a>
+          <a class="cinematic-hero__link" href="#tur">Lihat foto kawasan</a>
         </div>
       </div>
     </section>
@@ -160,23 +159,33 @@
       <div class="wrap">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Tur virtual panorama</span>
-            <h2>Berhenti sejenak.<br>Rasakan suasana hutan.</h2>
+            <span class="eyebrow">Galeri foto kawasan</span>
+            <h2>Jalur boardwalk &<br>pemandangan menara.</h2>
           </div>
-          <p>Geser panorama untuk mengamati ilustrasi suasana jalur boardwalk dan pemandangan menara. Gunakan mouse atau
-            sentuhan.</p>
+          <p>Pilih foto untuk melihat jalur boardwalk atau pemandangan dari menara.</p>
         </div>
         <div class="tour-frame">
-          <div id="tour-viewer" aria-label="Tur virtual panorama mangrove"></div>
+          <div id="tour-viewer" role="group" aria-label="Galeri foto kawasan mangrove">
+            <img class="tour-photo is-visible" src="./assets/mangrovedua.jpg"
+              alt="Jalur boardwalk di antara pepohonan mangrove">
+            <span class="tour-photo-caption" aria-live="polite">Jalur boardwalk</span>
+            <div class="tour-photo-controls" role="group" aria-label="Kontrol foto">
+              <button type="button" data-photo-zoom-out aria-label="Perkecil foto" disabled>-</button>
+              <button type="button" data-photo-zoom-in aria-label="Perbesar foto">+</button>
+              <button type="button" data-photo-reset>Reset</button>
+            </div>
+            <span class="sr-only" data-photo-zoom-status aria-live="polite">Pembesaran 100%</span>
+          </div>
         </div>
         <div class="tour-controls">
-          <button class="tour-button active" data-tour="boardwalk"><img src="./assets/mangrovedua.jpg" alt="">Jalur
-            boardwalk</button>
-          <button class="tour-button" data-tour="lookout"><img src="./assets/mangrove.jpg" alt="">Pemandangan
-            menara</button>
+          <button class="tour-button active" type="button" data-tour="boardwalk" aria-pressed="true">
+            <img src="./assets/mangrovedua.jpg" alt="">Jalur boardwalk
+          </button>
+          <button class="tour-button" type="button" data-tour="lookout" aria-pressed="false">
+            <img src="./assets/menara.jpeg" alt="">Pemandangan menara
+          </button>
         </div>
-        <p class="fine-print" style="margin-top:12px">Panorama ilustratif untuk pengalaman desain; bukan dokumentasi
-          foto 360° resmi kawasan.</p>
+        <p class="fine-print" style="margin-top:12px">Gunakan tombol + untuk memperbesar, lalu seret foto. Foto ini bukan panorama 360° penuh.</p>
       </div>
     </section>
     <section class="section" id="cerita">
@@ -350,7 +359,6 @@
       </svg></button>
   </div>
   <span class="sr-only" role="status" aria-live="polite" data-sound-status></span>
-  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script src="./app.js"></script>
 </body>
