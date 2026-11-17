@@ -1222,6 +1222,11 @@ h3 {
   gap: 16px
 }
 
+.benefits-grid>.benefit-card {
+  align-self: start;
+  height: max-content
+}
+
 .benefit-card,
 .guideline-card,
 .species-card,

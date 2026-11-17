@@ -26,6 +26,18 @@ navLinks?.querySelectorAll('a').forEach((link) => link.addEventListener('click',
 
 document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
+document.querySelectorAll('.benefits-grid').forEach((grid) => {
+  const cards = Array.from(grid.querySelectorAll('.benefit-card'));
+  cards.forEach((card) => {
+    card.addEventListener('toggle', () => {
+      if (!card.open) return;
+      cards.forEach((otherCard) => {
+        if (otherCard !== card) otherCard.open = false;
+      });
+    });
+  });
+});
+
 document.querySelectorAll('a.read-more[href^="#"]').forEach((link) => {
   link.addEventListener('click', () => {
     const target = document.getElementById(link.hash.slice(1));
