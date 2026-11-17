@@ -352,22 +352,34 @@ if (window.AOS) AOS.init({ duration: 650, once: true, offset: 50 });
 
 const mapElement = document.querySelector('#eco-map');
 if (mapElement && window.L) {
-  // Pusat peta berada di kawasan pesisir Gunung Anyar; titik fasilitas ditandai sebagai titik ilustratif.
-  const map = L.map(mapElement, { scrollWheelZoom: false }).setView([-7.3385, 112.8212], 15);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  // Pusat peta berada di kawasan Ekowisata Mangrove Gunung Anyar (Plus Code: MR99+MGM).
+  const map = L.map(mapElement, { scrollWheelZoom: false }).setView([-7.3310, 112.8188], 17);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics'
+  }).addTo(map);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: ''
   }).addTo(map);
   const places = [
-    { name: 'Dermaga Susur Sungai', coords: [-7.3392, 112.8198] },
-    { name: 'Menara Pandang 12 m', coords: [-7.3368, 112.8223] },
-    { name: 'Boardwalk Kayu', coords: [-7.338, 112.823] },
-    { name: 'Area Pembibitan', coords: [-7.3403, 112.8211] }
+    { name: 'Dermaga Susur Sungai', coords: [-7.3307, 112.8185] },
+    { name: 'Menara Pandang 12 m', coords: [-7.33150, 112.8188] },
+    { name: 'Boardwalk Kayu', coords: [-7.3310, 112.8190] },
+    { name: 'Area Pembibitan', coords: [-7.3313, 112.8176] }
   ];
-  places.forEach((place) => {
+  const mapPointElements = document.querySelectorAll('.map-point');
+  places.forEach((place, index) => {
     const markerIcon = L.divIcon({ className: 'custom-marker', iconSize: [18, 18], iconAnchor: [9, 9] });
-    L.marker(place.coords, { icon: markerIcon }).addTo(map).bindPopup(`<strong>${place.name}</strong><br>Ekowisata Mangrove Gunung Anyar`);
+    const marker = L.marker(place.coords, { icon: markerIcon }).addTo(map).bindPopup(`<strong>${place.name}</strong><br>Ekowisata Mangrove Gunung Anyar`);
+    if (mapPointElements[index]) {
+      mapPointElements[index].addEventListener('click', () => {
+        map.flyTo(place.coords, 18, { duration: 0.8 });
+        marker.openPopup();
+      });
+    }
   });
+  window.setTimeout(() => map.invalidateSize(), 200);
 }
 
 const tourViewer = document.querySelector('#tour-viewer');
@@ -897,7 +909,7 @@ const initAmbientSoundscape = () => {
           applyPosition(l, t);
         }
       }
-    } catch (_) {}
+    } catch (_) { }
 
     widget.addEventListener('pointerdown', (e) => {
       if (!e.target.closest('[data-sound-toggle]') || e.button !== 0) return;
@@ -926,7 +938,7 @@ const initAmbientSoundscape = () => {
         widget.classList.add('is-dragging');
         try {
           widget.setPointerCapture(e.pointerId);
-        } catch (_) {}
+        } catch (_) { }
       }
 
       applyPosition(origLeft + dx, origTop + dy);
@@ -940,7 +952,7 @@ const initAmbientSoundscape = () => {
         if (widget.hasPointerCapture && widget.hasPointerCapture(e.pointerId)) {
           widget.releasePointerCapture(e.pointerId);
         }
-      } catch (_) {}
+      } catch (_) { }
 
       widget.classList.remove('is-dragging');
 
@@ -958,7 +970,7 @@ const initAmbientSoundscape = () => {
             ratioX: rect.left / window.innerWidth,
             ratioY: rect.top / window.innerHeight
           }));
-        } catch (_) {}
+        } catch (_) { }
       }
     };
 
