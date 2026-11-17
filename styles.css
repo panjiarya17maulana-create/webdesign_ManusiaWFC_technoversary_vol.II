@@ -1227,6 +1227,15 @@ h3 {
   height: max-content
 }
 
+.guidelines-grid {
+  align-items: start
+}
+
+.guidelines-grid>.guideline-card {
+  align-self: start;
+  height: max-content
+}
+
 .benefit-card,
 .guideline-card,
 .species-card,
@@ -3431,7 +3440,8 @@ body.home-page .stat span {
   overflow: hidden
 }
 
-.benefit-card[open] {
+.benefit-card[open],
+.guideline-card[open] {
   border-color: #b8d2bb;
   box-shadow: 0 16px 36px rgba(21, 62, 49, .1)
 }
@@ -3489,11 +3499,14 @@ body.home-page .stat span {
 }
 
 .benefit-card[open]>p,
-.benefit-card[open]>.benefit-extra {
+.benefit-card[open]>.benefit-extra,
+.guideline-card[open]>p,
+.guideline-card[open]>.guideline-tip {
   animation: benefit-content-in .38s cubic-bezier(.2, .75, .25, 1) both
 }
 
-.benefit-card[open]>.benefit-extra {
+.benefit-card[open]>.benefit-extra,
+.guideline-card[open]>.guideline-tip {
   animation-delay: .06s
 }
 
@@ -3524,7 +3537,10 @@ body.home-page .stat span {
 @media(prefers-reduced-motion:reduce) {
   .benefit-card,
   .benefit-card>p,
-  .benefit-card>.benefit-extra {
+  .benefit-card>.benefit-extra,
+  .guideline-card,
+  .guideline-card>p,
+  .guideline-card>.guideline-tip {
     animation: none;
     transition: none
   }

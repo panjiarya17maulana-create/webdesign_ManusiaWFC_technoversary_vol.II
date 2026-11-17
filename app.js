@@ -26,8 +26,8 @@ navLinks?.querySelectorAll('a').forEach((link) => link.addEventListener('click',
 
 document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
-document.querySelectorAll('.benefits-grid').forEach((grid) => {
-  const cards = Array.from(grid.querySelectorAll('.benefit-card'));
+document.querySelectorAll('.benefits-grid, .guidelines-grid').forEach((grid) => {
+  const cards = Array.from(grid.querySelectorAll('details'));
   cards.forEach((card) => {
     card.addEventListener('toggle', () => {
       if (!card.open) return;
